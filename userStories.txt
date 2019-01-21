@@ -1,0 +1,16 @@
+Put user stories in this file. 
+
+
+1 (game.jar): WIP
+  As a player, I want to be able to click cells on the board so that it makes an attack at that location. 
+    1: Click a cell to select location.
+    2: Confirm action.
+      1. Continue: Sends to next step.
+      2. Cancel: Sends to first step.
+    3: Check if attack hit or missed.
+    4: Update board.
+      1. If miss display a miss in that cell.
+      2. If hit display a hit in that cell.
+    5: Next players turn.
+    
+    
