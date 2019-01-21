@@ -1,16 +1,21 @@
 package cs361.battleships.models;
 
-public enum AtackStatus {
-
-	/**
-	 * The result if an attack results in a miss.
-	 */
-	MISS,
+public enum AttackStatus {
 
 	/**
 	 * The result if an attack results in a hit on an enemy ship.
 	 */
 	HIT,
+
+	/**
+	 * The result if the coordinates given are invalid.
+	 */
+	INVALID,
+
+	/**
+	 * The result if an attack results in a miss.
+	 */
+	MISS,
 
 	/**
 	 * THe result if an attack sinks the enemy ship
@@ -22,10 +27,5 @@ public enum AtackStatus {
 	 * surrender).
 	 */
 	SURRENDER,
-	
-	/**
-	 * The result if the coordinates given are invalid.
-	 */
-	INVALID,
 
 }
