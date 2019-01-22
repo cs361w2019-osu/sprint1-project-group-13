@@ -7,19 +7,23 @@ import java.util.List;
 
 public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares;
-	private String kind;
+	@JsonProperty private List<Square> occupiedSquares = new ArrayList<>();
 
-	public Ship() {
-		occupiedSquares = new ArrayList<>();
-	}
+	@JsonProperty private String kind;
 
 	public Ship(String shipType) {
-		this.kind = shipType;
+		kind = shipType;
 	}
 
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
 
+	public boolean setLocation(int x, char y) {
+		return false;
+	}
+
+	public Ship dup() {
+		return new Ship(kind);
+	}
 }
