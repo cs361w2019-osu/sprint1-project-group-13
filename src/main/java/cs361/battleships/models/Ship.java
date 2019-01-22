@@ -14,8 +14,8 @@ public class Ship {
 		occupiedSquares = new ArrayList<>();
 	}
 
-	public Ship(String kind) {
-		this.kind = kind;
+	public Ship(String shipType) {
+		this.kind = shipType;
 	}
 
 	public List<Square> getOccupiedSquares() {
