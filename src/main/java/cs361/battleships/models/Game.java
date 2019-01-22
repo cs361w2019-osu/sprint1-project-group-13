@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import static cs361.battleships.models.AtackStatus.*;
+import static cs361.battleships.models.AttackStatus.*;
 
 public class Game {
 
@@ -50,17 +51,57 @@ public class Game {
     }
 
     private char randCol() {
-        // TODO implement
-        return 'X';
+        Random r = new Random(); //makes random work
+        int myRand = r.nextInt(10); //grabs a value from 0-9
+        char myAlph;
+        if(myRand == 0) { //Turns the random variable into its col char counterpart
+            myAlph = 'a';
+        }
+        else if(myRand == 1) {
+            myAlph = 'b';
+        }
+        else if(myRand == 2) {
+            myAlph = 'c';
+        }
+        else if(myRand == 3) {
+            myAlph = 'd';
+        }
+        else if(myRand == 4) {
+            myAlph = 'e';
+        }
+        else if(myRand == 5) {
+            myAlph = 'f';
+        }
+        else if(myRand == 6) {
+            myAlph = 'g';
+        }
+        else if(myRand == 7) {
+            myAlph = 'h';
+        }
+        else if(myRand == 8) {
+            myAlph = 'i';
+        }
+        else {
+            myAlph = 'j';
+        }
+
+        //Should be good now
+        return myAlph; //returns the random char from a-j
     }
 
     private int randRow() {
-        // TODO implement
-        return 0;
+        Random r = new Random(); //Makes a random string of values
+        return r.nextInt(10); // grabs a number from 0-9
+        //Should work now
     }
 
     private boolean randVertical() {
-        // TODO implement
-        return false;
+        Random r = new Random();  //Makes rand work
+        int tempBool = r.nextInt(2); //generates a number from 0-1
+        if (tempBool == 1) { // If the number is one returns true
+            return true;
+        } else { //otherwise returns false
+            return false;
+        }
     }
 }
