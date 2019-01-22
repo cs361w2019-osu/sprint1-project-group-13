@@ -8,17 +8,18 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
+	private String kind;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
-	
-	public Ship(String kind) {
-		//TODO implement
+
+	public Ship(String shipType) {
+		this.kind = shipType;
 	}
 
 	public List<Square> getOccupiedSquares() {
-		//TODO implement
-		return null;
+		return occupiedSquares;
 	}
+
 }
