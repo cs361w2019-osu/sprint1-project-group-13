@@ -44,6 +44,16 @@ public class BoardTest {
     }
 
     @Test
+    public void testAttacksRecorded() {
+        Board board = new Board();
+        board.attack(1, 'A');
+        board.attack(1, 'B');
+        board.attack(1, 'C');
+        assert(board.getAttacks().size() == 3);
+        assert(board.getAttacks().get(0).getResult() == AttackStatus.MISS);
+    }
+
+    @Test
     public void testAttackHit() {
         Board board = new Board();
         board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false);
