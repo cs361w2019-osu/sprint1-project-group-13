@@ -1,14 +1,12 @@
 package cs361.battleships.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
-	@JsonProperty private List<Ship> ships = new ArrayList<>();
-	@JsonProperty private List<Result> attacks = new ArrayList<>();
+	private List<Ship> ships = new ArrayList<>();
+	private List<Result> attacks = new ArrayList<>();
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -19,8 +17,17 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO
-		return false;
+		var valid = ship.setLocation(x, y, isVertical);
+		if (!valid) return false;
+
+		for (Square sq : ship.getOccupiedSquares()) {
+			if (isOccupied(sq)) {
+				return false;
+			}
+		}
+
+		ships.add(ship);
+		return true;
 	}
 
 	/*
@@ -32,9 +39,18 @@ public class Board {
 		att.setLocation(new Square(x, y));
 		att.setResult(AttackStatus.MISS);
 
+		// Reject out of bounds moves
 		if (x < 1 || x > 10 || y < 'A' || y > 'J') {
 			att.setResult(AttackStatus.INVALID);
 			return att;
+		}
+
+		// Reject existing moves
+		for (Result past : attacks) {
+			if (past.getLocation().getRow() == x && past.getLocation().getColumn() == y) {
+				att.setResult(AttackStatus.INVALID);
+				return att;
+			}
 		}
 
 		findShip:
@@ -58,7 +74,35 @@ public class Board {
 			}
 		}
 
+		attacks.add(att);
 		return att;
+	}
+
+	public List<Ship> getShips() {
+		return ships;
+	}
+
+	public void setShips(List<Ship> ships) {
+		this.ships = ships;
+	}
+
+	public List<Result> getAttacks() {
+		return attacks;
+	}
+
+	public void setAttacks(List<Result> attacks) {
+		this.attacks = attacks;
+	}
+
+	private boolean isOccupied(Square test) {
+		for (Ship s : ships) {
+			for (Square sq : s.getOccupiedSquares()) {
+				if (sq.getRow() == test.getRow() && sq.getColumn() == test.getColumn()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private boolean isHit(int x, char y) {

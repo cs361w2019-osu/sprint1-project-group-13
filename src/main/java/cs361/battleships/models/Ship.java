@@ -19,8 +19,8 @@ public class Ship {
 
 	}
 
-	public Ship(int size) {
-		this.size = size;
+	public Ship() {
+
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -46,6 +46,8 @@ public class Ship {
 	}
 
 	public Ship dup() {
-		return new Ship(size);
+		var s = new Ship();
+		s.size = this.size;
+		return s;
 	}
 }
