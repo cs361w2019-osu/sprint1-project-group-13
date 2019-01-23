@@ -45,7 +45,7 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() != INVALID);
+        } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
     }
@@ -55,34 +55,34 @@ public class Game {
         int myRand = r.nextInt(10); //grabs a value from 0-9
         char myAlph;
         if(myRand == 0) { //Turns the random variable into its col char counterpart
-            myAlph = 'a';
+            myAlph = 'A';
         }
         else if(myRand == 1) {
-            myAlph = 'b';
+            myAlph = 'B';
         }
         else if(myRand == 2) {
-            myAlph = 'c';
+            myAlph = 'C';
         }
         else if(myRand == 3) {
-            myAlph = 'd';
+            myAlph = 'D';
         }
         else if(myRand == 4) {
-            myAlph = 'e';
+            myAlph = 'E';
         }
         else if(myRand == 5) {
-            myAlph = 'f';
+            myAlph = 'F';
         }
         else if(myRand == 6) {
-            myAlph = 'g';
+            myAlph = 'G';
         }
         else if(myRand == 7) {
-            myAlph = 'h';
+            myAlph = 'H';
         }
         else if(myRand == 8) {
-            myAlph = 'i';
+            myAlph = 'I';
         }
         else {
-            myAlph = 'j';
+            myAlph = 'J';
         }
 
         //Should be good now
