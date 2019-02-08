@@ -25,7 +25,7 @@ td:hover {
 }
 
 .occupied {
-    background-color: black;
+    background-color: yellow;
 }
 
 .hit {
@@ -38,4 +38,21 @@ td:hover {
 
 .miss {
     background-color: blue;
+}
+#buttonbox {
+position: absolute;
+top: 375px;
+left: 600px;
+}
+
+#player {
+position: absolute;
+float: left;
+top: 400px;
+}
+#opponent {
+position: absolute;
+top: 30px;
+left: 500px;
+
 }
