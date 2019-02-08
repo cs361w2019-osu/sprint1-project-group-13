@@ -25,7 +25,7 @@ td:hover {
 }
 
 .occupied {
-    background-color: black;
+    background-color: brown;
 }
 
 .hit {
@@ -37,5 +37,5 @@ td:hover {
 }
 
 .miss {
-    background-color: blue;
+    background-color: lightblue;
 }
