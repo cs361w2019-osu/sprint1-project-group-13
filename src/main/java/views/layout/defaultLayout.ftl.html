@@ -1,34 +1,30 @@
 <#macro myLayout title="Layout example">
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>${title}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/custom.css">
+    <head>
+        <meta charset="utf-8" />
+        <title>${title}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/assets/css/custom.css" />
+    </head>
+    <body>
+        <div class="container">
 
-<body>
-    <div class="container">
-        
-        <#include "header.ftl.html"/>
-        
-        <#if (flash.error)??>
-            <div class="alert alert-danger">
-                ${flash.error}
-            </div>
-        </#if>
-        
-        <#if (flash.success)??>
-            <div class="alert alert-success">
-                ${flash.success}
-            </div>
-        </#if>
+            <#if (flash.error)??>
+                <div class="alert alert-danger">
+                    ${flash.error}
+                </div>
+            </#if>
 
-        <#nested/>
+            <#if (flash.success)??>
+                <div class="alert alert-success">
+                    ${flash.success}
+                </div>
+            </#if>
 
-        <#include "footer.ftl.html"/>
-        
-    </div> <!-- /container -->
-</body>
+            <#nested/>
+
+        </div>
+    </body>
 </html>
 </#macro>
