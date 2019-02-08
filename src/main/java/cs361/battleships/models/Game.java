@@ -10,8 +10,8 @@ import static cs361.battleships.models.AttackStatus.*;
 
 public class Game {
 
-    @JsonProperty private Board playersBoard = new Board();
-    @JsonProperty private Board opponentsBoard = new Board();
+    @JsonProperty protected Board playersBoard = new Board();
+    @JsonProperty protected Board opponentsBoard = new Board();
 
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -25,7 +25,7 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship.dup(), randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -55,34 +55,34 @@ public class Game {
         int myRand = r.nextInt(10); //grabs a value from 0-9
         char myAlph;
         if(myRand == 0) { //Turns the random variable into its col char counterpart
-            myAlph = 'a';
+            myAlph = 'A';
         }
         else if(myRand == 1) {
-            myAlph = 'b';
+            myAlph = 'B';
         }
         else if(myRand == 2) {
-            myAlph = 'c';
+            myAlph = 'C';
         }
         else if(myRand == 3) {
-            myAlph = 'd';
+            myAlph = 'D';
         }
         else if(myRand == 4) {
-            myAlph = 'e';
+            myAlph = 'E';
         }
         else if(myRand == 5) {
-            myAlph = 'f';
+            myAlph = 'F';
         }
         else if(myRand == 6) {
-            myAlph = 'g';
+            myAlph = 'G';
         }
         else if(myRand == 7) {
-            myAlph = 'h';
+            myAlph = 'H';
         }
         else if(myRand == 8) {
-            myAlph = 'i';
+            myAlph = 'I';
         }
         else {
-            myAlph = 'j';
+            myAlph = 'J';
         }
 
         //Should be good now
