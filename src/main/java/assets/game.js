@@ -84,13 +84,16 @@ function redrawGuide () {
 
 function cellHoverOn (e) {
   if (!currentShip()) return
-  let row = e.target.parentNode.rowIndex + 1
-  let col = String.fromCharCode(e.target.cellIndex + 65)
+  let row = e.target.parentNode.rowIndex
+  let col = e.target.cellIndex
+  console.log('hover', row, col)
+  if (vertical && (row + currentSize() >= 10)) return;
+  if (!vertical && (col + currentSize() >= 10)) return;
   for (let i = 0; i <= currentSize(); i++) {
     if (vertical) {
-      document.getElementById('player').rows[row - 1 + i].cells[col.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add('hover')
+      document.getElementById('player').rows[row + i].cells[col].classList.add('hover')
     } else {
-      document.getElementById('player').rows[row - 1].cells[col.charCodeAt(0) - 'A'.charCodeAt(0) + i].classList.add('hover')
+      document.getElementById('player').rows[row].cells[col + i].classList.add('hover')
     }
   }
 }
