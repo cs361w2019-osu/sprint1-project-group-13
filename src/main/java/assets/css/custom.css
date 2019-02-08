@@ -31,7 +31,7 @@ body {
 }
 
 .occupied {
-    background-color: yellow;
+    background-color: brown;
 }
 
 .hit {
@@ -43,8 +43,8 @@ body {
 }
 
 .miss {
-    background-color: blue;
     position: relative;
+    background-color: lightblue;
 }
 
 .miss:after {
