@@ -47,7 +47,7 @@ body {
     background-color: lightblue;
 }
 
-.miss:after {
+#opponent .miss:after {
     position: absolute;
     color: white;
     content: "X";
@@ -67,7 +67,7 @@ body {
     align-items: center;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
@@ -88,13 +88,20 @@ h1 {
     height: 200px;
 }
 
-#player .miss:after {
-    content: none;
-}
-
 #guide {
     flex-grow: 1;
     margin: 0 1rem;
     border: 1px solid black;
     padding: 0.5rem;
+}
+
+.example {
+    display: inline-block;
+    border: 1px solid black;
+    width: 15px;
+    height: 15px;
+}
+
+#errortext {
+    color: red;
 }

@@ -131,10 +131,13 @@ function enemyCellClick () {
 }
 
 function sendXhr (method, url, data, handler) {
+  const error = document.getElementById('errortext')
+  error.innerText = ''
+
   var req = new XMLHttpRequest()
   req.addEventListener('load', function (event) {
     if (req.status !== 200) {
-      alert('Cannot complete the action')
+      error.innerText = 'Cannot complete that action!'
       return
     }
     handler(JSON.parse(req.responseText))
