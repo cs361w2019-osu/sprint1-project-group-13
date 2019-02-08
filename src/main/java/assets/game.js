@@ -1,145 +1,187 @@
-var isSetup = true;
-var placedShips = 0;
-var game;
-var shipType;
-var vertical;
+var placedShips = 0
+var game = null
+var vertical = false
 
-function makeGrid(table, isPlayer) {
-    for (i=0; i<10; i++) {
-        let row = document.createElement('tr');
-        for (j=0; j<10; j++) {
-            let column = document.createElement('td');
-            column.addEventListener("click", cellClick);
-            row.appendChild(column);
-        }
-        table.appendChild(row);
+function shipFromSize (i) {
+  switch (i) {
+    case 1: return 'MINESWEEPER'
+    case 2: return 'DESTROYER'
+    case 3: return 'BATTLESHIP'
+    default: return ''
+  }
+}
+
+function currentSize () {
+  return placedShips + 1
+}
+
+function currentShip () {
+  return shipFromSize(currentSize())
+}
+
+function makeGrid (table, isPlayer) {
+  for (let i = 0; i < 10; i++) {
+    let row = document.createElement('tr')
+    for (let j = 0; j < 10; j++) {
+      let cell = document.createElement('td')
+      if (isPlayer) {
+        cell.addEventListener('click', allyCellClick)
+        cell.addEventListener('mouseover', cellHoverOn)
+        cell.addEventListener('mouseleave', cellHoverOff)
+      } else {
+        cell.addEventListener('click', enemyCellClick)
+      }
+      row.appendChild(cell)
     }
+    table.appendChild(row)
+  }
 }
 
-function markHits(board, elementId, surrenderText) {
-    board.attacks.forEach((attack) => {
-        let className;
-        if (attack.result === "MISS")
-            className = "miss";
-        else if (attack.result === "HIT")
-            className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit"
-        else if (attack.result === "SURRENDER")
-            alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
-    });
-}
-
-function redrawGrid() {
-    Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
-    Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
-    makeGrid(document.getElementById("opponent"), false);
-    makeGrid(document.getElementById("player"), true);
-    if (game === undefined) {
-        return;
+function markHits (board, elementId, surrenderText) {
+  board.attacks.forEach((attack) => {
+    let className
+    if (attack.result === 'MISS') {
+      className = 'miss'
+    } else if (attack.result === 'HIT') {
+      className = 'hit'
+    } else if (attack.result === 'SUNK') {
+      className = 'hit'
+    } else if (attack.result === 'SURRENDER') {
+      alert(surrenderText)
     }
-
-    game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    document.getElementById(elementId).rows[attack.location.row - 1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className)
+  })
 }
 
-var oldListener;
-function registerCellListener(f) {
-    let el = document.getElementById("player");
-    for (i=0; i<10; i++) {
-        for (j=0; j<10; j++) {
-            let cell = el.rows[i].cells[j];
-            cell.removeEventListener("mouseover", oldListener);
-            cell.removeEventListener("mouseout", oldListener);
-            cell.addEventListener("mouseover", f);
-            cell.addEventListener("mouseout", f);
-        }
-    }
-    oldListener = f;
+function redrawGrid () {
+  Array.from(document.getElementById('opponent').childNodes).forEach((row) => row.remove())
+  Array.from(document.getElementById('player').childNodes).forEach((row) => row.remove())
+  makeGrid(document.getElementById('opponent'), false)
+  makeGrid(document.getElementById('player'), true)
+  if (game === undefined) {
+    return
+  }
+
+  game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+    document.getElementById('player').rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add('occupied')
+  }))
+
+  markHits(game.opponentsBoard, 'opponent', 'You won the game')
+  markHits(game.playersBoard, 'player', 'You lost the game')
 }
 
-function cellClick() {
-    let row = this.parentNode.rowIndex + 1;
-    let col = String.fromCharCode(this.cellIndex + 65);
-    if (isSetup) {
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            game = data;
-            redrawGrid();
-            placedShips++;
-            if (placedShips == 3) {
-                isSetup = false;
-                registerCellListener((e) => {});
-            }
-        });
+function redrawGuide () {
+  const guide = document.getElementById('guidetext')
+  const bonus = document.getElementById('bonustext')
+  if (placedShips < 3) {
+    guide.innerText = `👈 Place ${currentShip()}`
+    bonus.innerText = '(Press R to rotate)'
+  } else {
+    guide.innerText = `☝️ Click to attack!`
+    bonus.innerText = ''
+  }
+}
+
+function cellHoverOn (e) {
+  if (!currentShip()) return
+  let row = e.target.parentNode.rowIndex + 1
+  let col = String.fromCharCode(e.target.cellIndex + 65)
+  for (let i = 0; i <= currentSize(); i++) {
+    if (vertical) {
+      document.getElementById('player').rows[row - 1 + i].cells[col.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add('hover')
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
-            game = data;
-            redrawGrid();
-        })
+      document.getElementById('player').rows[row - 1].cells[col.charCodeAt(0) - 'A'.charCodeAt(0) + i].classList.add('hover')
     }
+  }
 }
 
-function sendXhr(method, url, data, handler) {
-    var req = new XMLHttpRequest();
-    req.addEventListener("load", function(event) {
-        if (req.status != 200) {
-            alert("Cannot complete the action");
-            return;
-        }
-        handler(JSON.parse(req.responseText));
-    });
-    req.open(method, url);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(JSON.stringify(data));
+function cellHoverOff (e) {
+  const els = document.getElementsByClassName('hover')
+  while (els[0]) {
+    els[0].classList.remove('hover')
+  }
 }
 
-function place(size) {
-    return function() {
-        let row = this.parentNode.rowIndex;
-        let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
-        let table = document.getElementById("player");
-        for (let i=0; i<size; i++) {
-            let cell;
-            if(vertical) {
-                let tableRow = table.rows[row+i];
-                if (tableRow === undefined) {
-                    // ship is over the edge; let the back end deal with it
-                    break;
-                }
-                cell = tableRow.cells[col];
-            } else {
-                cell = table.rows[row].cells[col+i];
-            }
-            if (cell === undefined) {
-                // ship is over the edge; let the back end deal with it
-                break;
-            }
-            cell.classList.toggle("placed");
-        }
+function allyCellClick () {
+  let row = this.parentNode.rowIndex + 1
+  let col = String.fromCharCode(this.cellIndex + 65)
+  if (currentShip()) {
+    const shipType = currentShip()
+    sendXhr('POST', '/place', { game, shipType, x: row, y: col, isVertical: vertical }, function (data) {
+      game = data
+      placedShips++
+      redrawGrid()
+      redrawGuide()
+    })
+  }
+}
+
+function enemyCellClick () {
+  let row = this.parentNode.rowIndex + 1
+  let col = String.fromCharCode(this.cellIndex + 65)
+  if (!currentShip()) {
+    sendXhr('POST', '/attack', { game: game, x: row, y: col }, function (data) {
+      game = data
+      redrawGrid()
+    })
+  }
+}
+
+function sendXhr (method, url, data, handler) {
+  var req = new XMLHttpRequest()
+  req.addEventListener('load', function (event) {
+    if (req.status !== 200) {
+      alert('Cannot complete the action')
+      return
     }
+    handler(JSON.parse(req.responseText))
+  })
+  req.open(method, url)
+  req.setRequestHeader('Content-Type', 'application/json')
+  req.send(JSON.stringify(data))
 }
 
-function initGame() {
-    makeGrid(document.getElementById("opponent"), false);
-    makeGrid(document.getElementById("player"), true);
-    document.getElementById("place_minesweeper").addEventListener("click", function(e) {
-        shipType = "MINESWEEPER";
-       registerCellListener(place(2));
-    });
-    document.getElementById("place_destroyer").addEventListener("click", function(e) {
-        shipType = "DESTROYER";
-       registerCellListener(place(3));
-    });
-    document.getElementById("place_battleship").addEventListener("click", function(e) {
-        shipType = "BATTLESHIP";
-       registerCellListener(place(4));
-    });
-    sendXhr("GET", "/game", {}, function(data) {
-        game = data;
-    });
-};
+function place (size) {
+  return function () {
+    let row = this.parentNode.rowIndex
+    let col = this.cellIndex
+    vertical = document.getElementById('is_vertical').checked
+    let table = document.getElementById('player')
+    for (let i = 0; i < size; i++) {
+      let cell
+      if (vertical) {
+        let tableRow = table.rows[row + i]
+        if (tableRow === undefined) {
+          // ship is over the edge; let the back end deal with it
+          break
+        }
+        cell = tableRow.cells[col]
+      } else {
+        cell = table.rows[row].cells[col + i]
+      }
+      if (cell === undefined) {
+        // ship is over the edge; let the back end deal with it
+        break
+      }
+      cell.classList.toggle('placed')
+    }
+  }
+}
+
+// Initialize game immediately.
+(function () {
+  makeGrid(document.getElementById('opponent'), false)
+  makeGrid(document.getElementById('player'), true)
+
+  document.onkeypress = function (e) {
+    if (e.code === 'KeyR') {
+      cellHoverOff()
+      vertical = !vertical
+    }
+  }
+
+  sendXhr('GET', '/game', {}, function (data) {
+    game = data
+    redrawGuide()
+  })
+})()

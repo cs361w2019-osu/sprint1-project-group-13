@@ -3,24 +3,26 @@
 
 body {
     font-family: "Arial", sans-serif;
+    font-size: 11pt;
 }
+
+/* Grid/Boards */
 
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
+    table-layout: fixed;
 }
 
 .battleGrid tr {
     border: 1px solid black;
-    height: 30px;
 }
 
 .battleGrid td {
     border: 1px solid black;
-    width: 30px;
 }
 
-td:hover {
+.hover, #opponent td:hover {
     background-color: gray;
 }
 
@@ -41,29 +43,58 @@ td:hover {
 }
 
 .miss {
+    position: relative;
     background-color: lightblue;
 }
 
 .miss:after {
-    font-size: 100%;
+    position: absolute;
     color: white;
     content: "X";
+    left: 10px;
+    top: 8px;
 }
 
-#buttonbox {
-position: absolute;
-top: 375px;
-left: 600px;
+/* Page Layout */
+
+.container {
+    width: 1000px;
+    margin: auto;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+#opponent {
+    margin: 1rem 0;
+    width: 320px;
+    height: 320px;
+}
+
+#playerside {
+    width: 480px;
+    display: flex;
+    justify-content: flex-start;
 }
 
 #player {
-position: absolute;
-float: left;
-top: 400px;
+    width: 200px;
+    height: 200px;
 }
-#opponent {
-position: absolute;
-top: 30px;
-left: 500px;
 
+#player .miss:after {
+    content: none;
+}
+
+#guide {
+    flex-grow: 1;
+    margin: 0 1rem;
+    border: 1px solid black;
+    padding: 0.5rem;
 }
