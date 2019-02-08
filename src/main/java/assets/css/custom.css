@@ -1,6 +1,10 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+body {
+    font-family: "Arial", sans-serif;
+}
+
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
@@ -39,6 +43,13 @@ td:hover {
 .miss {
     background-color: blue;
 }
+
+.miss:after {
+    font-size: 100%;
+    color: white;
+    content: "X";
+}
+
 #buttonbox {
 position: absolute;
 top: 375px;
