@@ -1,4 +1,4 @@
-import { underShip, isOccupied, isAttacked } from './utils.js'
+import { underShip, isOccupied, isAttacked, isSonared } from './utils.js'
 
 /* global React */
 const { createElement: h, Component } = React
@@ -38,6 +38,7 @@ export default class Board extends Component {
     return [
       !disable && this.isHovered(square) ? 'hover' : '',
       // TODO add "sonar" class to square if close to pulse (isSonared)
+      isSonared(board, square) ? 'sonar' : '',
       isOccupied(board, square) ? 'occupied' : '',
       isAttacked(board, square) ? 'hit' : ''
     ].join(' ')

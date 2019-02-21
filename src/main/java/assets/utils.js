@@ -28,6 +28,16 @@ export function isSonared ({ sonars }, { x, y }) {
   return sonars.find(s => Math.abs(s.x - x) + Math.abs(s.y - y) <= 2)
 }
 
+export function isAnyShipSunk (board) {
+  if (!board) return false
+  if (board.ships.length === 0) return false
+  return board.ships.filter(ship => ship.sunk).length > 0
+}
+
+export function canSonar (board) {
+  return isAnyShipSunk(board) && board.sonars.length < 2
+}
+
 export function allShipsSunk (board) {
   if (!board) return false
   if (board.ships.length === 0) return false
