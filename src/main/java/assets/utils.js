@@ -7,19 +7,6 @@ export function underShip ({ origin, vertical, size }, { x, y }) {
       y <= origin.y + (vertical ? size - 1 : 0)
 }
 
-export function getSquares (ship) {
-  const list = []
-  const { x, y } = ship.origin
-  for (let i = 0; i < ship.size; i++) {
-    if (ship.vertical) {
-      list.push({ x: x + i, y })
-    } else {
-      list.push({ x, y: y + i })
-    }
-  }
-  return list
-}
-
 export function getShipKind (size) {
   switch (size) {
     case 2: return 'MINESWEEPER'
@@ -41,15 +28,8 @@ export function isSonared ({ sonars }, { x, y }) {
   return sonars.find(s => Math.abs(s.x - x) + Math.abs(s.y - y) <= 2)
 }
 
-export function shipSunk (board, ship) {
-  const list = getSquares(ship)
-  const sunk1 = list.filter(sq => !isAttacked(board, sq)).length === 0
-  const sunk2 = false
-  return sunk1 || sunk2
-}
-
 export function allShipsSunk (board) {
   if (!board) return false
   if (board.ships.length === 0) return false
-  return board.ships.filter(ship => !shipSunk(board, ship)).length === 0
+  return board.ships.filter(ship => !ship.sunk).length === 0
 }

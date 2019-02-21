@@ -10,6 +10,7 @@ public class Ship {
 	@JsonProperty int size;
 	@JsonProperty Square origin;
 	@JsonProperty boolean vertical;
+	@JsonProperty boolean sunk;
 
 	@SuppressWarnings("unused")
 	Ship() {}
@@ -45,6 +46,11 @@ public class Ship {
 	@JsonIgnore
 	public boolean isCaptainsReinforced() {
 		return size > 2;
+	}
+
+	@JsonIgnore
+	public void markSunk() {
+		this.sunk = true;
 	}
 
 }

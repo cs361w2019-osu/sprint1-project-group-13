@@ -46,6 +46,11 @@ public class Board {
 		// TODO allow captains quarters double hit
 
 		attacks.add(sq);
+
+		// Set any ships sunk if they are, to make the client simpler
+		for (var ship : ships) if (isSunk(ship)) ship.markSunk();
+
+		// true means the server should return the new game state
 		return true;
 	}
 
