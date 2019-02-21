@@ -54,8 +54,9 @@ export default class Board extends Component {
         onClick: () => !disable && onSquare(origin),
         onMouseLeave: () => this.hover(null)
       },
-      range.map(x => {
-        return range.map(y => {
+      // Fill grid in row by row
+      range.map(y => {
+        return range.map(x => {
           const sq = { x, y }
           return h('div', {
             key: `${x}:${y}`,

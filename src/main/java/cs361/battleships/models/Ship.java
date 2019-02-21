@@ -25,9 +25,9 @@ public class Ship {
 		var list = new ArrayList<Square>();
 		for (int i = 0; i < size; i++) {
 			if (vertical) {
-				list.add(new Square(origin.x + i, origin.y));
-			} else {
 				list.add(new Square(origin.x, origin.y + i));
+			} else {
+				list.add(new Square(origin.x + i, origin.y));
 			}
 		}
 		return list;
@@ -36,9 +36,9 @@ public class Ship {
 	@JsonIgnore
 	public Square getCaptainsQuarters() {
 		if (vertical) {
-			return new Square(origin.x + size - 2, origin.y);
-		} else {
 			return new Square(origin.x, origin.y + size - 2);
+		} else {
+			return new Square(origin.x + size - 2, origin.y);
 		}
 	}
 

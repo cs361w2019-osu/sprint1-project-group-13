@@ -3,8 +3,8 @@ export function underShip ({ origin, vertical, size }, { x, y }) {
   return origin &&
       x >= origin.x &&
       y >= origin.y &&
-      x <= origin.x + (vertical ? size - 1 : 0) &&
-      y <= origin.y + (vertical ? 0 : size - 1)
+      x <= origin.x + (vertical ? 0 : size - 1) &&
+      y <= origin.y + (vertical ? size - 1 : 0)
 }
 
 export function getSquares (ship) {

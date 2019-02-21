@@ -55,12 +55,15 @@ export default class Game extends Component {
     this.send('/game')
   }
 
-  componentWillUpdate () {
-    const { game } = this.state
-    if (allShipsSunk(game.opponentsBoard)) {
-      this.setState({ conclusion: 'Victory!' })
-    } else if (allShipsSunk(game.playersBoard)) {
-      this.setState({ conclusion: 'Defeat!' })
+  componentWillUpdate (_, newState) {
+    const { game, conclusion } = newState
+    if (!conclusion) {
+      if (allShipsSunk(game.opponentsBoard)) {
+        this.setState({ conclusion: 'Victory!' })
+      }
+      if (allShipsSunk(game.playersBoard)) {
+        this.setState({ conclusion: 'Defeat!' })
+      }
     }
   }
 
