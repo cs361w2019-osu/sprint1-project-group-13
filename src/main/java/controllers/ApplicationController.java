@@ -2,7 +2,6 @@ package controllers;
 
 import com.google.inject.Singleton;
 import cs361.battleships.models.Game;
-import cs361.battleships.models.Ship;
 import ninja.Context;
 import ninja.Result;
 import ninja.Results;
@@ -19,22 +18,25 @@ public class ApplicationController {
         return Results.json().render(g);
     }
 
-    public Result placeShip(Context context, PlacementGameAction g) {
-        Game game = g.getGame();
-        Ship ship = new Ship(g.getShipType());
-        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
-        if (result) {
-            return Results.json().render(game);
+    public Result placeShip(Context context, PlacementAction g) {
+        if (g.game.placeShip(g.size, g.square, g.vertical)) {
+            return Results.json().render(g.game);
         } else {
             return Results.badRequest();
         }
     }
 
-    public Result attack(Context context, AttackGameAction g) {
-        Game game = g.getGame();
-        boolean result = game.attack(g.getActionRow(), g.getActionColumn());
-        if (result) {
-            return Results.json().render(game);
+    public Result attack(Context context, GameAction g) {
+        if (g.game.attack(g.square)) {
+            return Results.json().render(g.game);
+        } else {
+            return Results.badRequest();
+        }
+    }
+
+    public Result sonar(Context context, GameAction g) {
+        if (g.game.sonar(g.square)) {
+            return Results.json().render(g.game);
         } else {
             return Results.badRequest();
         }

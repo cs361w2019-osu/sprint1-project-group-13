@@ -1,0 +1,79 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+
+body {
+    font-family: "Arial", sans-serif;
+    font-size: 11pt;
+    text-align: center;
+}
+
+/* Grid/Boards */
+
+.board {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    width: 360px;
+    height: 360px;
+    border: 1px solid black;
+}
+
+.board.disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.board > div {
+    border: 1px solid black;
+}
+
+.board .hover {
+    background: gray;
+    cursor: pointer;
+}
+
+.board .hit,
+.board .sonar {
+    background-color: lightblue;
+}
+
+.board .sonar.occupied {
+    background-color: darkblue;
+}
+
+.board.allied .occupied {
+    background-color: brown;
+}
+
+.board .occupied.hit {
+    background-color: orange;
+}
+
+/* Page Layout */
+
+.game {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.player {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.player .board {
+    width: 160px;
+    height: 160px;
+}
+
+.player .guide {
+    border: 1px solid black;
+    width: 240px;
+    height: 160px;
+    margin-left: 1rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}

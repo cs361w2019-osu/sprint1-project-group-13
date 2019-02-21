@@ -1,28 +1,15 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
+<@layout.myLayout "Battleship">
 
 
-<h1>The Battleship Game</h1>
+    <h1>The Battleship Game</h1>
 
-<table id="opponent" class="battleGrid"></table>
-
-<div id="playerside">
-    <div>
-        <table id="player" class="battleGrid"></table>
+    <div id="game">
+        <p>Loading...</p>
     </div>
-    <div id="guide">
-        <div>
-            <span><span class="example occupied"></span> Ship</span>
-            <span><span class="example miss"></span> Miss</span>
-            <span><span class="example hit"></span> Hit</span>
-        </div>
-        <hr>
-        <p id="guidetext">Loading...</p>
-        <p id="bonustext"></p>
-        <p id="errortext"></p>
-    </div>
-</div>
 
-<script src="/assets/game.js"></script>
+    <script crossorigin src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script type="module" src="/assets/index.js"></script>
 
 </@layout.myLayout>
