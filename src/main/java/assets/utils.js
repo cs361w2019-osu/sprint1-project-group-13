@@ -48,6 +48,17 @@ export function shipSunk (board, ship) {
   return sunk1 || sunk2
 }
 
+export function isAnyShipSunk (board) {
+   if (!board) return false
+   if (board.ships.length === 0) return false
+   return board.ships.filter(ship => shipSunk(board, ship)).length > 0
+}
+
+export function canSonar (board) {
+    return isAnyShipSunk(board) && board.sonars.length < 2
+}
+
+
 export function allShipsSunk (board) {
   if (!board) return false
   if (board.ships.length === 0) return false
