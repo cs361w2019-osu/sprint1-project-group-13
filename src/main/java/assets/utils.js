@@ -25,7 +25,7 @@ export function getShipKind (size) {
     case 2: return 'MINESWEEPER'
     case 3: return 'DESTROYER'
     case 4: return 'BATTLESHIP'
-    default: return ''
+    default: return null
   }
 }
 
