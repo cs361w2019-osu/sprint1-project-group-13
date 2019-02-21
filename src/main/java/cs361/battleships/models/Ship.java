@@ -1,53 +1,50 @@
 package cs361.battleships.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares = new ArrayList<>();
+	@JsonProperty int size;
+	@JsonProperty Square origin;
+	@JsonProperty boolean vertical;
 
-	@JsonProperty private int size;
+	@SuppressWarnings("unused")
+	Ship() {}
 
-	public Ship(String shipType) {
-		if("MINESWEEPER".equals(shipType)) size = 2;
-		else if("DESTROYER".equals(shipType)) size = 3;
-		else if("BATTLESHIP".equals(shipType)) size = 4;
-		else throw new IllegalArgumentException("shipType");
-
+	public Ship(int size, Square origin, boolean vertical) {
+		this.size = size;
+		this.origin = origin;
+		this.vertical = vertical;
 	}
 
-	public Ship() {
-
-	}
-
-	public List<Square> getOccupiedSquares() {
-		return occupiedSquares;
-	}
-
-	public boolean setLocation(int x, char y, boolean isVertical) {
-		if(isVertical){
-			if(x < 1 || x > 11 - size || y < 'A' || y > 'J') return false;
+	@JsonIgnore
+	public List<Square> getSquares() {
+		var list = new ArrayList<Square>();
+		for (int i = 0; i < size; i++) {
+			if (vertical) {
+				list.add(new Square(origin.x + i, origin.y));
+			} else {
+				list.add(new Square(origin.x, origin.y + i));
+			}
 		}
-
-		else {
-			if(x < 1 || x > 10 || y < 'A' || y > 'K' - size) return false;
-		}
-
-		for(var i = 0; i < size; i++){
-
-			Square square = new Square(isVertical ? x + i : x, isVertical ? y : (char)(y + i));
-			occupiedSquares.add(square);
-		}
-		return true;
-
+		return list;
 	}
 
-	public Ship dup() {
-		var s = new Ship();
-		s.size = this.size;
-		return s;
+	@JsonIgnore
+	public Square getCaptainsQuarters() {
+		if (vertical) {
+			return new Square(origin.x + size - 2, origin.y);
+		} else {
+			return new Square(origin.x, origin.y + size - 2);
+		}
 	}
+
+	@JsonIgnore
+	public boolean isCaptainsReinforced() {
+		return size > 2;
+	}
+
 }

@@ -1,32 +1,26 @@
 package cs361.battleships.models;
 
-@SuppressWarnings("unused")
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Square {
 
-	private int row;
-	private char column;
+	@JsonProperty int x;
+	@JsonProperty int y;
 
-	public Square() {
-	}
+	@SuppressWarnings("unused")
+	Square() { }
 
-	public Square(int row, char column) {
-		this.row = row;
-		this.column = column;
-	}
-
-	public char getColumn() {
-		return column;
+	Square(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
-	public void setColumn(char column) {
-		this.column = column;
-	}
-	
-	public int getRow() {
-		return row;
+	boolean isAllowed() {
+		return (x >= 0 && x <= 9 && y >= 0 && y <= 9);
 	}
 
-	public void setRow(int row) {
-		this.row = row;
+	boolean equals(Square sq) {
+		return sq.x == x && sq.y == y;
 	}
+
 }

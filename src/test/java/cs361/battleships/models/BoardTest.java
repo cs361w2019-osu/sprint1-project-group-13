@@ -2,100 +2,53 @@ package cs361.battleships.models;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class BoardTest {
 
     @Test
-    public void testPlacementOutOfBounds() {
+    public void testPlacementAdjacentToEdge() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
+        assert(board.placeShip(new Ship(2, new Square(9,3), false)));
     }
 
     @Test
     public void testPlacementOverEdge() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'C', true));
-    }
-
-    @Test
-    public void testPlacementAdjacentToEdge() {
-        Board board = new Board();
-        assert(board.placeShip(new Ship("MINESWEEPER"), 10, 'C', false));
+        assertFalse(board.placeShip(new Ship(2, new Square(9,3), true)));
     }
 
     @Test
     public void testPlacementGoodCorner() {
         Board board = new Board();
-        assert(board.placeShip(new Ship("MINESWEEPER"), 9, 'A', true));
+        assert(board.placeShip(new Ship(2, new Square(9,0), false)));
     }
 
     @Test
     public void testPlacementBadCorner() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'J', false));
+        assertFalse(board.placeShip(new Ship(2, new Square(9,9), false)));
     }
 
     @Test
     public void testPlacementOverlapping() {
         Board board = new Board();
-        assert(board.placeShip(new Ship("DESTROYER"), 1, 'B', true));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 3, 'A', false));
-    }
-
-    @Test
-    public void testAttacksRecorded() {
-        Board board = new Board();
-        board.attack(1, 'A');
-        board.attack(1, 'B');
-        board.attack(1, 'C');
-        assert(board.getAttacks().size() == 3);
-        assert(board.getAttacks().get(0).getResult() == AttackStatus.MISS);
-    }
-
-    @Test
-    public void testAttackHit() {
-        Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false);
-        var result = board.attack(10, 'I');
-        assert(result.getResult() == AttackStatus.HIT);
-    }
-
-    @Test
-    public void testAttackMiss() {
-        Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false);
-        var result = board.attack(10, 'H');
-        assert(result.getResult() == AttackStatus.MISS);
+        assert(board.placeShip(new Ship(3, new Square(1,0), false)));
+        assertFalse(board.placeShip(new Ship(3, new Square(0,0), true)));
+        assertFalse(board.placeShip(new Ship(3, new Square(0,1), true)));
+        assertFalse(board.placeShip(new Ship(3, new Square(0,2), true)));
+        assert(board.placeShip(new Ship(3, new Square(0,3), false)));
     }
 
     @Test
     public void testAttackRepeat() {
         Board board = new Board();
-        board.attack(10, 'H');
-        var result = board.attack(10, 'H');
-        assert(result.getResult() == AttackStatus.INVALID);
+        board.attack(new Square(0, 0));
+        assertFalse(board.attack(new Square(0, 0)));
+        assert(board.attack(new Square(0, 1)));
     }
 
-    @Test
-    public void testAttackSunk() {
-        Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 10, 'A', false);
-        board.placeShip(new Ship("DESTROYER"), 10, 'C', false);
-        var result = board.attack(10, 'A');
-        assert(result.getResult() == AttackStatus.HIT);
-        result = board.attack(10, 'B');
-        assert(result.getResult() == AttackStatus.SUNK);
-    }
-
-    @Test
-    public void testAttackSurrender() {
-        Board board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 10, 'A', false);
-        var result = board.attack(10, 'A');
-        assert(result.getResult() == AttackStatus.HIT);
-        result = board.attack(10, 'B');
-        assert(result.getResult() == AttackStatus.SURRENDER);
-    }
+    // TODO captains quarters attack allowed
+    // TODO sonar allowed and disallowed
 
 }
