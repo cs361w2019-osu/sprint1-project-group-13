@@ -43,6 +43,7 @@ export default class Game extends Component {
   async sonar (square) {
     const { game } = this.state
     await this.send('/sonar', { game, square })
+    this.setState({ sonarMode: false })
   }
 
   componentDidMount () {
