@@ -12,7 +12,7 @@ public class GameTest {
         assert(game.opponentsBoard.ships.size() == 0);
         game.placeShip(2, new Square(0, 0), false);
         assert(game.opponentsBoard.ships.size() == 1);
-        game.placeShip(3, new Square(1, 0), false);
+        game.placeShip(3, new Square(0, 1), false);
         assert(game.opponentsBoard.ships.size() == 2);
     }
 
