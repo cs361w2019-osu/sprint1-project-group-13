@@ -10,6 +10,7 @@ public class Board {
 	@JsonProperty List<Ship> ships = new ArrayList<>();
 	@JsonProperty List<Square> attacks = new ArrayList<>();
 	@JsonProperty List<Square> sonars = new ArrayList<>();
+	@JsonProperty Boolean canSonar;
 
 	/** Add a ship to the board, if it won't collide with an edge or another ship. */
 	public boolean placeShip(Ship ship) {
@@ -59,28 +60,33 @@ public class Board {
 
 		// TODO disallow if no ships have sank
 		if(ships.isEmpty()){
-			return false;
+			canSonar = false;
+			return canSonar;
 		}
 
 		if(!isAnySunk()) {
-			return false;
+			canSonar = false;
+			return canSonar;
 		}
 
 		// TODO disallow sonar on same square
 		if(isSameSonar(sq)){
-			return false;
+			canSonar = false;
+			return canSonar;
 		}
 
 		// TODO limit two
 		if(!lessThanTwoSonars()){
-			return false;
+			canSonar = false;
+			return canSonar;
 		}
 
 
 		// TODO add sonar to list
 		sonars.add(sq);
 
-		return true;
+		canSonar = true;
+		return canSonar;
 	}
 
 	private int attacksAt(Square sq) {
