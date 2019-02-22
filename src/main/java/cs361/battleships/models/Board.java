@@ -43,10 +43,14 @@ public class Board {
 		// Reject any attack overlapping with a previous one
 		int attacksNum = attacksAt(sq);
 		if (attacksNum > 0 ){
-			for (var ship : ships) if ((sq.equals(ship.getCaptainsQuarters())) && (attacksNum > 1)) return false;
-		}
+			for (var ship : ships) {
+				if(sq.equals(ship.getCaptainsQuarters())){
+					if(attacksNum > 1) return false;
+				}
 
-		// TODO allow captains quarters double hit
+
+			}
+		}
 
 		attacks.add(sq);
 
