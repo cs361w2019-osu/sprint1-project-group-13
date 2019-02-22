@@ -9,19 +9,19 @@ public class BoardTest {
     @Test
     public void testPlacementAdjacentToEdge() {
         Board board = new Board();
-        assert(board.placeShip(new Ship(2, new Square(9,3), false)));
+        assert(board.placeShip(new Ship(2, new Square(3,9), false)));
     }
 
     @Test
     public void testPlacementOverEdge() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship(2, new Square(9,3), true)));
+        assertFalse(board.placeShip(new Ship(2, new Square(3,9), true)));
     }
 
     @Test
     public void testPlacementGoodCorner() {
         Board board = new Board();
-        assert(board.placeShip(new Ship(2, new Square(9,0), false)));
+        assert(board.placeShip(new Ship(2, new Square(0,9), false)));
     }
 
     @Test
@@ -33,11 +33,11 @@ public class BoardTest {
     @Test
     public void testPlacementOverlapping() {
         Board board = new Board();
-        assert(board.placeShip(new Ship(3, new Square(1,0), false)));
+        assert(board.placeShip(new Ship(3, new Square(0,1), false)));
         assertFalse(board.placeShip(new Ship(3, new Square(0,0), true)));
-        assertFalse(board.placeShip(new Ship(3, new Square(0,1), true)));
-        assertFalse(board.placeShip(new Ship(3, new Square(0,2), true)));
-        assert(board.placeShip(new Ship(3, new Square(0,3), false)));
+        assertFalse(board.placeShip(new Ship(3, new Square(1,0), true)));
+        assertFalse(board.placeShip(new Ship(3, new Square(2,0), true)));
+        assert(board.placeShip(new Ship(3, new Square(3,0), false)));
     }
 
     @Test
