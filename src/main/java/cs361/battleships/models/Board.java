@@ -41,7 +41,10 @@ public class Board {
 	/** Add attack to board, if valid. */
 	public boolean attack(Square sq) {
 		// Reject any attack overlapping with a previous one
-		if ((attacksAt(sq) > 0 )|| (sq != sq.getCaptainsQuarters())) return false;
+		int attacksNum = attacksAt(sq);
+		if (attacksNum > 0 ){
+			for (var ship : ships) if ((sq.equals(ship.getCaptainsQuarters())) && (attacksNum > 1)) return false;
+		}
 
 		// TODO allow captains quarters double hit
 
@@ -72,6 +75,8 @@ public class Board {
 	}
 
 	private boolean isSunk(Ship ship) {
+		if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
+		else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
 		for (var sq : ship.getSquares()) if (attacksAt(sq) == 0) return false;
 		return true;
 	}
