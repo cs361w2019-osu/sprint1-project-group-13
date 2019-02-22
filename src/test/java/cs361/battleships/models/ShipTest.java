@@ -15,7 +15,7 @@ public class ShipTest {
     @Test
     public void testDestroyer() {
         var ship = new Ship(3, new Square(0, 0), false);
-        assert(ship.getCaptainsQuarters().equals(new Square(0, 1)));
+        assert(ship.getCaptainsQuarters().equals(new Square(1, 0)));
 
     }
 

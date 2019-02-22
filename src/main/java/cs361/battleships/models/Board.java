@@ -58,11 +58,29 @@ public class Board {
 	public boolean sonar(Square sq) {
 
 		// TODO disallow if no ships have sank
-		// TODO disallow sonar on same square
-		// TODO limit two
-		// TODO add sonar to list
+		if(ships.isEmpty()){
+			return false;
+		}
 
-		return false;
+		if(!isAnySunk()) {
+			return false;
+		}
+
+		// TODO disallow sonar on same square
+		if(isSameSonar(sq)){
+			return false;
+		}
+
+		// TODO limit two
+		if(!lessThanTwoSonars()){
+			return false;
+		}
+
+
+		// TODO add sonar to list
+		sonars.add(sq);
+
+		return true;
 	}
 
 	private int attacksAt(Square sq) {
@@ -74,6 +92,31 @@ public class Board {
 	private boolean isSunk(Ship ship) {
 		for (var sq : ship.getSquares()) if (attacksAt(sq) == 0) return false;
 		return true;
+	}
+
+	private boolean isAnySunk(){
+		for(Integer i = 0; i < ships.size(); i++){
+			if(ships.get(i).sunk == true){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isSameSonar(Square sq){
+		for(Integer i = 0; i < sonars.size(); i++){
+			if(sonars.get(i).equals(sq)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean lessThanTwoSonars(){
+		if(sonars.size() < 2) {
+			return true;
+		}
+		return false;
 	}
 
 }
