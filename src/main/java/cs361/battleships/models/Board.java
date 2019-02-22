@@ -41,7 +41,7 @@ public class Board {
 	/** Add attack to board, if valid. */
 	public boolean attack(Square sq) {
 		// Reject any attack overlapping with a previous one
-		if (attacksAt(sq) > 0) return false;
+		if ((attacksAt(sq) > 0 )|| (sq != sq.getCaptainsQuarters())) return false;
 
 		// TODO allow captains quarters double hit
 
