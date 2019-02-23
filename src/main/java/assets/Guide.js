@@ -34,7 +34,8 @@ export default class Guide extends Component {
   render () {
     return h('div', { className: 'guide' },
       h('p', {}, this.guideText()),
-      h('p', {}, this.bonusText())
+      h('p', {}, this.bonusText()),
+      h('p', { className: 'error' }, this.props.error)
     )
   }
 }

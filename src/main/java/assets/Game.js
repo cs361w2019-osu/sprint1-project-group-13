@@ -15,18 +15,25 @@ export default class Game extends Component {
       size: 2,
       vertical: false,
       sonarMode: false,
-      conclusion: ''
+      conclusion: '',
+      error: null
     }
   }
 
   async send (url, body) {
-    const resp = await fetch(url, {
-      method: body ? 'post' : 'get',
-      headers: body ? { 'Content-Type': 'application/json' } : {},
-      body: body ? JSON.stringify(body) : null
-    })
-    const game = await resp.json()
-    this.setState({ game })
+    this.setState({ error: null })
+    try {
+        const resp = await fetch(url, {
+          method: body ? 'post' : 'get',
+          headers: body ? { 'Content-Type': 'application/json' } : {},
+          body: body ? JSON.stringify(body) : null
+        })
+        const game = await resp.json()
+        this.setState({ game })
+    } catch (err) {
+        this.setState({ error: 'Unable to do that!' })
+        throw err;
+    }
   }
 
   async place (square) {
@@ -70,7 +77,7 @@ export default class Game extends Component {
   }
 
   render () {
-    const { game, size, vertical, sonarMode, conclusion } = this.state
+    const { game, size, vertical, sonarMode, conclusion, error } = this.state
 
     const canSonar = game.opponentsBoard && game.opponentsBoard.canSonar
 
@@ -96,7 +103,8 @@ export default class Game extends Component {
           kind: getShipKind(size),
           sonarMode,
           conclusion,
-          canSonar
+          canSonar,
+          error
         })
       )
     )
