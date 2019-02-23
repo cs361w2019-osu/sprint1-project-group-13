@@ -55,7 +55,14 @@ public class BoardTest {
         board.attack(new Square(0, 0));
         assertFalse(board.attack(new Square(0,0)));
     }
-
+    @Test
+    public void captainTest(){
+        Board board = new Board();
+        board.placeShip(new Ship(3, new Square(0,0), true));
+        assertTrue(board.attack(new Square(0,1)));
+        assertTrue(board.attack(new Square(0,1)));
+        assertFalse(board.attack(new Square(0,1)));
+    }
     // TODO captains quarters attack allowed
     // TODO sonar allowed and disallowed
 

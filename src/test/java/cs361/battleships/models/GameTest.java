@@ -15,7 +15,12 @@ public class GameTest {
         game.placeShip(3, new Square(0, 1), false);
         assert(game.opponentsBoard.ships.size() == 2);
     }
-
+    @Test
+    public void testSimpleAttack() {
+        Game game = new Game();
+        game.placeShip(2, new Square(0, 0), false);
+        assert(game.attack((new Square(0, 0))));
+    }
     // TODO attack turns
 
 }
