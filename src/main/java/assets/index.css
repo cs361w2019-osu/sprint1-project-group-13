@@ -81,3 +81,7 @@ body {
     padding: 0.5rem;
     box-sizing: border-box;
 }
+
+.player .guide .error {
+    color: darkred;
+}
