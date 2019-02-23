@@ -58,11 +58,10 @@ public class Board {
 	/** Add sonar pulse to board, if valid. */
 	public boolean sonar(Square sq) {
 
+		if (!canSonar) return false;
+
 		// Disallow sonar on same square
 		if(isSameSonar(sq)) return false;
-
-		// Limit two
-		if(!lessThanTwoSonars()) return false;
 
 		sonars.add(sq);
 		updateCanSonar();
