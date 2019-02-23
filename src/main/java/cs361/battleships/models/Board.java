@@ -10,7 +10,7 @@ public class Board {
 	@JsonProperty List<Ship> ships = new ArrayList<>();
 	@JsonProperty List<Square> attacks = new ArrayList<>();
 	@JsonProperty List<Square> sonars = new ArrayList<>();
-	@JsonProperty Boolean canSonar;
+	@JsonProperty Boolean canSonar = false;
 
 	/** Add a ship to the board, if it won't collide with an edge or another ship. */
 	public boolean placeShip(Ship ship) {
@@ -51,42 +51,26 @@ public class Board {
 		// Set any ships sunk if they are, to make the client simpler
 		for (var ship : ships) if (isSunk(ship)) ship.markSunk();
 
-		// true means the server should return the new game state
+		updateCanSonar();
 		return true;
 	}
 
 	/** Add sonar pulse to board, if valid. */
 	public boolean sonar(Square sq) {
 
-		// TODO disallow if no ships have sank
-		if(ships.isEmpty()){
-			canSonar = false;
-			return canSonar;
-		}
+		// Disallow sonar on same square
+		if(isSameSonar(sq)) return false;
 
-		if(!isAnySunk()) {
-			canSonar = false;
-			return canSonar;
-		}
+		// Limit two
+		if(!lessThanTwoSonars()) return false;
 
-		// TODO disallow sonar on same square
-		if(isSameSonar(sq)){
-			canSonar = false;
-			return canSonar;
-		}
-
-		// TODO limit two
-		if(!lessThanTwoSonars()){
-			canSonar = false;
-			return canSonar;
-		}
-
-
-		// TODO add sonar to list
 		sonars.add(sq);
+		updateCanSonar();
+		return true;
+	}
 
-		canSonar = true;
-		return canSonar;
+	private void updateCanSonar() {
+		canSonar = lessThanTwoSonars() && isAnySunk();
 	}
 
 	private int attacksAt(Square sq) {

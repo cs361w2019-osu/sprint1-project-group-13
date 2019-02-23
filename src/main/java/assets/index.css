@@ -49,6 +49,10 @@ body {
     background-color: orange;
 }
 
+.board .occupied.sunk {
+    background-color: darkorange;
+}
+
 /* Page Layout */
 
 .game {

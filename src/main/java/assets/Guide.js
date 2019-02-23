@@ -17,14 +17,14 @@ export default class Guide extends Component {
   }
 
   bonusText () {
-    const { kind, sonarable, sonarMode, conclusion } = this.props
+    const { kind, canSonar, sonarMode, conclusion } = this.props
     if (conclusion) {
       return 'Reload to start a new game.'
     } else if (kind) {
       return `(Press R to rotate)`
     } else if (sonarMode) {
       return `(Press S to switch to attack)`
-    } else if (sonarable) {
+    } else if (canSonar) {
       return `(Press S to switch to sonar pulse)`
     } else {
       return ''

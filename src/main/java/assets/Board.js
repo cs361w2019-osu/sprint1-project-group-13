@@ -1,4 +1,4 @@
-import { underShip, isOccupied, isAttacked, isSonared } from './utils.js'
+import { underShip, isOccupied, isAttacked, isSonared, isSunk } from './utils.js'
 
 /* global React */
 const { createElement: h, Component } = React
@@ -40,7 +40,8 @@ export default class Board extends Component {
       // TODO add "sonar" class to square if close to pulse (isSonared)
       isSonared(board, square) ? 'sonar' : '',
       isOccupied(board, square) ? 'occupied' : '',
-      isAttacked(board, square) ? 'hit' : ''
+      isAttacked(board, square) ? 'hit' : '',
+      isSunk(board, square) ? 'sunk' : ''
     ].join(' ')
   }
 
