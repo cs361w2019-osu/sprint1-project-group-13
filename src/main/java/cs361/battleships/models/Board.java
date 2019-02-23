@@ -42,23 +42,22 @@ public class Board {
 	public boolean attack(Square sq) {
 		// Reject any attack overlapping with a previous one
 		int attacksNum = attacksAt(sq);
-		if (attacksNum > 0 ){
+		if (attacksNum > 0 ) {
 			for (var ship : ships) {
-				if(sq.equals(ship.getCaptainsQuarters())){
-					if(attacksNum > 1) return false;
+				if (sq.equals(ship.getCaptainsQuarters())) {
+					if (attacksNum > 1) return false;
 				}
-
-
 			}
+			return false;
 		}
 
-		attacks.add(sq);
 
-		// Set any ships sunk if they are, to make the client simpler
+			attacks.add(sq);
+		//Set any ships sunk if they are, to make the client simpler
 		for (var ship : ships) if (isSunk(ship)) ship.markSunk();
-
-		// true means the server should return the new game state
 		return true;
+		// true means the server should return the new game state
+
 	}
 
 	/** Add sonar pulse to board, if valid. */
