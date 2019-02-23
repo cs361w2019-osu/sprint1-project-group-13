@@ -20,22 +20,16 @@ export function isOccupied ({ ships }, sq) {
   return ships.find(s => underShip(s, sq))
 }
 
+export function isSunk ({ ships }, sq) {
+  return ships.find(s => underShip(s, sq) && s.sunk)
+}
+
 export function isAttacked ({ attacks }, { x, y }) {
   return attacks.find(a => a.x === x && a.y === y)
 }
 
 export function isSonared ({ sonars }, { x, y }) {
   return sonars.find(s => Math.abs(s.x - x) + Math.abs(s.y - y) <= 2)
-}
-
-export function isAnyShipSunk (board) {
-  if (!board) return false
-  if (board.ships.length === 0) return false
-  return board.ships.filter(ship => ship.sunk).length > 0
-}
-
-export function canSonar (board) {
-  return isAnyShipSunk(board) && board.sonars.length < 2
 }
 
 export function allShipsSunk (board) {

@@ -1,6 +1,6 @@
 import Board from './Board.js'
 import Guide from './Guide.js'
-import { allShipsSunk, getShipKind, canSonar } from './utils.js'
+import { allShipsSunk, getShipKind } from './utils.js'
 
 /* eslint-env browser */
 /* global React */
@@ -49,8 +49,9 @@ export default class Game extends Component {
   componentDidMount () {
     const keypress = e => {
       const { vertical, sonarMode, game } = this.state
+      const canSonar = game.opponentsBoard && game.opponentsBoard.canSonar
       if (e.code === 'KeyR') this.setState({ vertical: !vertical })
-      if (e.code === 'KeyS' && canSonar(game.opponentsBoard)) this.setState({ sonarMode: !sonarMode })
+      if (e.code === 'KeyS') this.setState({ sonarMode: canSonar ? !sonarMode : false })
     }
     document.addEventListener('keypress', keypress)
     this.send('/game')
@@ -70,6 +71,8 @@ export default class Game extends Component {
 
   render () {
     const { game, size, vertical, sonarMode, conclusion } = this.state
+
+    const canSonar = game.opponentsBoard && game.opponentsBoard.canSonar
 
     return h('div', { className: 'game' },
       h(Board, {
@@ -93,7 +96,7 @@ export default class Game extends Component {
           kind: getShipKind(size),
           sonarMode,
           conclusion,
-          sonarable: canSonar(game.opponentsBoard)
+          canSonar
         })
       )
     )
