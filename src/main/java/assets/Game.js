@@ -12,7 +12,7 @@ export default class Game extends Component {
     super()
     this.state = {
       game: { opponentsBoard: { ships: [] }, playersBoard: { ships: [] } },
-      yetToPlace: ['minesweeper', 'destroyer', 'battleship'],
+      yetToPlace: ['minesweeper', 'destroyer', 'battleship', 'submarine'],
       vertical: false,
       submerged: false,
       sonarMode: false,
@@ -57,9 +57,9 @@ export default class Game extends Component {
 
   componentDidMount () {
     const keypress = e => {
-      const { vertical, submerged, sonarMode, game } = this.state
+      const { vertical, submerged, sonarMode, game, yetToPlace: [type] } = this.state
       const canSonar = game.opponentsBoard && game.opponentsBoard.canSonar
-      const canSubmerge = game.playersBoard.ships.length >= 3
+      const canSubmerge = type === 'submarine'
       if (e.code === 'KeyR') this.setState({ vertical: !vertical })
       if (e.code === 'KeyP') this.setState({ sonarMode: canSonar ? !sonarMode : false })
       if (e.code === 'KeyS') this.setState({ submerged: canSubmerge ? !submerged : false })

@@ -1,4 +1,4 @@
-import { isOccupied, isAttacked, isSonared, isSunk, sameSquareAs, isInNextShip } from './utils.js'
+import { isOccupied, isAttacked, isSonared, isSunk, isSubmerged, sameSquareAs, isInNextShip } from './utils.js'
 
 /* global React */
 const { createElement: h, Component } = React
@@ -31,10 +31,11 @@ export default class Board extends Component {
   }
 
   squareClass (square) {
-    const { disable, board } = this.props
+    const { board, submerged } = this.props
     return [
-      !disable && this.isHovered(square) ? 'hover' : '',
+      this.isHovered(square) ? `hover ${submerged ? 'submerged' : ''}` : '',
       isSonared(board, square) ? 'sonar' : '',
+      isSubmerged(board, square) ? 'submerged' : '',
       isOccupied(board, square) ? 'occupied' : '',
       isAttacked(board, square) ? 'hit' : '',
       isSunk(board, square) ? 'sunk' : ''
