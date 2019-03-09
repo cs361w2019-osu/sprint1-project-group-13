@@ -4,11 +4,11 @@ const { createElement: h, Component } = React
 /** Tell the player what can be done next. */
 export default class Guide extends Component {
   guideText () {
-    const { kind, sonarMode, conclusion } = this.props
+    const { nextShip, sonarMode, conclusion } = this.props
     if (conclusion) {
       return conclusion
-    } else if (kind) {
-      return `👈 Place ${kind}`
+    } else if (nextShip) {
+      return `👈 Place ${nextShip}`
     } else if (sonarMode) {
       return `☝️ Click to deploy sonar pulse!`
     } else {
@@ -17,15 +17,17 @@ export default class Guide extends Component {
   }
 
   bonusText () {
-    const { kind, canSonar, sonarMode, conclusion } = this.props
+    const { nextShip, canSonar, sonarMode, conclusion } = this.props
     if (conclusion) {
       return 'Reload to start a new game.'
-    } else if (kind) {
+    } else if (nextShip === 'submarine') {
+      return `(Press R to rotate, S to submerge)`
+    } else if (nextShip) {
       return `(Press R to rotate)`
     } else if (sonarMode) {
-      return `(Press S to switch to attack)`
+      return `(Press P to switch to attack)`
     } else if (canSonar) {
-      return `(Press S to switch to sonar pulse)`
+      return `(Press P to switch to sonar pulse)`
     } else {
       return ''
     }

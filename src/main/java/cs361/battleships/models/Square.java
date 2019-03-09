@@ -4,23 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Square {
 
-	@JsonProperty int x;
-	@JsonProperty int y;
+	@JsonProperty public int col;
+	@JsonProperty public int row;
 
-	@SuppressWarnings("unused")
-	Square() { }
+	public Square() { }
 
-	Square(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Square(int col, int row) {
+		this.col = col;
+		this.row = row;
 	}
 
 	boolean isAllowed() {
-		return (x >= 0 && x <= 9 && y >= 0 && y <= 9);
+		return (col >= 0 && col <= 9 && row >= 0 && row <= 9);
 	}
 
 	boolean equals(Square sq) {
-		return sq.x == x && sq.y == y;
+		return sq.col == col && sq.row == row;
 	}
 
 }

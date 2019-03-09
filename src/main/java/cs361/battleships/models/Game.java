@@ -1,6 +1,7 @@
 package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import cs361.battleships.models.ships.Ship;
 
 import java.util.Random;
 
@@ -9,18 +10,18 @@ public class Game {
     @JsonProperty Board playersBoard = new Board();
     @JsonProperty Board opponentsBoard = new Board();
 
-    /** Player places a ship. */
-    public boolean placeShip(int size, Square sq, boolean vertical) {
+    /** Player places the next ship. */
+    public boolean placeShip(Ship ally, Ship enemy) {
 
         // Player ship placement either works or not
-        Ship ally = new Ship(size, sq, vertical);
         if (!playersBoard.placeShip(ally)) return false;
 
         // AI places random ships, so it might try and place overlapping ships
         // Loop and try until it gets it right
         boolean enemyPlaced;
         do {
-            Ship enemy = new Ship(size, randomSquare(), randVertical());
+            enemy.origin = randomSquare();
+            enemy.vertical = randBool();
             enemyPlaced = opponentsBoard.placeShip(enemy);
         } while (!enemyPlaced);
 
@@ -54,7 +55,7 @@ public class Game {
         return new Square(r.nextInt(10), r.nextInt(10)); // grabs numbers from 0-9
     }
 
-    private boolean randVertical() {
+    private boolean randBool() {
         Random r = new Random();  //Makes rand work
         int tempBool = r.nextInt(2); //generates a number from 0-1
         return tempBool == 1;

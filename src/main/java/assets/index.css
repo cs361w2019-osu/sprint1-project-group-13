@@ -32,6 +32,10 @@ body {
     cursor: pointer;
 }
 
+.board .hover.submerged {
+    background: #16161d;
+}
+
 .board .hit,
 .board .sonar {
     background-color: lightblue;
@@ -43,6 +47,10 @@ body {
 
 .board.allied .occupied {
     background-color: brown;
+}
+
+.board.allied .occupied.submerged {
+    background-color: darkgray;
 }
 
 .board .occupied.hit {
