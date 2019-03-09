@@ -1,4 +1,4 @@
-import { underShip, isOccupied, isAttacked, isSonared, isSunk } from './utils.js'
+import { isOccupied, isAttacked, isSonared, isSunk, sameSquareAs, isInNextShip } from './utils.js'
 
 /* global React */
 const { createElement: h, Component } = React
@@ -13,15 +13,12 @@ export default class Board extends Component {
   }
 
   isHovered (sq) {
-    const { size, vertical } = this.props
+    const { vertical, submerged, type, player, disable } = this.props
     const { origin } = this.state
-    return underShip({ origin, size, vertical }, sq)
-  }
-
-  hover (origin) {
-    const { disable } = this.props
-    if (disable) return
-    this.setState({ origin })
+    if (disable) return false
+    if (!origin) return false
+    if (!player) return sameSquareAs(sq)(origin)
+    return isInNextShip({ type, vertical, origin, submerged }, sq)
   }
 
   boardClass () {
@@ -37,7 +34,6 @@ export default class Board extends Component {
     const { disable, board } = this.props
     return [
       !disable && this.isHovered(square) ? 'hover' : '',
-      // TODO add "sonar" class to square if close to pulse (isSonared)
       isSonared(board, square) ? 'sonar' : '',
       isOccupied(board, square) ? 'occupied' : '',
       isAttacked(board, square) ? 'hit' : '',
@@ -54,16 +50,16 @@ export default class Board extends Component {
       {
         className: this.boardClass(),
         onClick: () => !disable && onSquare(origin),
-        onMouseLeave: () => this.hover(null)
+        onMouseLeave: () => this.setState({ origin: null })
       },
       // Fill grid in row by row
-      range.map(y => {
-        return range.map(x => {
-          const sq = { x, y }
+      range.map(row => {
+        return range.map(col => {
+          const sq = { col, row }
           return h('div', {
-            key: `${x}:${y}`,
+            key: `${col}:${row}`,
             className: board ? this.squareClass(sq) : '',
-            onMouseEnter: () => this.hover(sq)
+            onMouseEnter: () => this.setState({ origin: sq })
           })
         })
       }).concat()

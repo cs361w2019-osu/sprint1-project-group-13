@@ -1,5 +1,7 @@
 package cs361.battleships.models;
 
+import cs361.battleships.models.ships.Destroyer;
+import cs361.battleships.models.ships.Minesweeper;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -8,36 +10,47 @@ public class BoardTest {
 
     @Test
     public void testPlacementAdjacentToEdge() {
-        Board board = new Board();
-        assert(board.placeShip(new Ship(2, new Square(3,9), false)));
+        var board = new Board();
+        var ship = new Minesweeper(new Square(3,9), false);
+        assertTrue(board.placeShip(ship));
     }
 
     @Test
     public void testPlacementOverEdge() {
-        Board board = new Board();
-        assertFalse(board.placeShip(new Ship(2, new Square(3,9), true)));
+        var board = new Board();
+        var ship = new Minesweeper(new Square(3,9), true);
+        assertFalse(board.placeShip(ship));
     }
 
     @Test
     public void testPlacementGoodCorner() {
-        Board board = new Board();
-        assert(board.placeShip(new Ship(2, new Square(0,9), false)));
+        var board = new Board();
+        var ship = new Minesweeper(new Square(0,9), false);
+        assertTrue(board.placeShip(ship));
     }
 
     @Test
     public void testPlacementBadCorner() {
-        Board board = new Board();
-        assertFalse(board.placeShip(new Ship(2, new Square(9,9), false)));
+        var board = new Board();
+        var ship = new Minesweeper(new Square(9,9), false);
+        assertFalse(board.placeShip(ship));
     }
 
     @Test
     public void testPlacementOverlapping() {
-        Board board = new Board();
-        assert(board.placeShip(new Ship(3, new Square(0,1), false)));
-        assertFalse(board.placeShip(new Ship(3, new Square(0,0), true)));
-        assertFalse(board.placeShip(new Ship(3, new Square(1,0), true)));
-        assertFalse(board.placeShip(new Ship(3, new Square(2,0), true)));
-        assert(board.placeShip(new Ship(3, new Square(3,0), false)));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(0,1), false);
+        assertTrue(board.placeShip(minesweeper));
+
+        var destroyer = new Minesweeper(new Square(0,0), true);
+        destroyer.origin = new Square(0, 0);
+        assertFalse(board.placeShip(destroyer));
+
+        destroyer.origin = new Square(0, 1);
+        assertFalse(board.placeShip(destroyer));
+
+        destroyer.origin = new Square(0, 2);
+        assertTrue(board.placeShip(destroyer));
     }
 
     /*@Test  OLD TEST
@@ -55,25 +68,31 @@ public class BoardTest {
         board.attack(new Square(0, 0));
         assertFalse(board.attack(new Square(0,0)));
     }
+
     @Test
     public void captainTest(){
-        Board board = new Board();
-        board.placeShip(new Ship(3, new Square(0,0), true));
-        assertTrue(board.attack(new Square(0,1)));
-        assertTrue(board.attack(new Square(0,1)));
-        assertFalse(board.attack(new Square(0,1)));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(0,0), false);
+        var destroyer = new Destroyer(new Square(0,1), false);
+
+        board.placeShip(minesweeper);
+        assertTrue(board.attack(new Square(0,0)));
+        assertFalse(board.attack(new Square(0,0)));
+
+        board.placeShip(destroyer);
+        assertTrue(board.attack(new Square(1,1)));
+        assertTrue(board.attack(new Square(1,1)));
+        assertFalse(board.attack(new Square(1,1)));
     }
-    // TODO captains quarters attack allowed
-    // TODO sonar allowed and disallowed
 
     @Test
     public void testSimpleSonar() {
-        Board board = new Board();
-        board.placeShip(new Ship(3, new Square(5,4), false));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(5,4), false);
+        board.placeShip(minesweeper);
         board.attack(new Square(5, 4));
         board.attack(new Square(6, 4));
-        board.attack(new Square(7, 4));
-        assert(board.sonar(new Square(5, 5)));
+        assertTrue(board.sonar(new Square(5, 5)));
     }
 
     @Test
@@ -84,36 +103,43 @@ public class BoardTest {
 
     @Test
     public void testSonarNoSunkShips() {
-        Board board = new Board();
-        board.placeShip(new Ship(3, new Square(5,4), false));
-        board.placeShip(new Ship(3, new Square(0,3), true));
-        board.attack(new Square(5, 4));
-        board.attack(new Square(6, 4));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(5,4), false);
+        var destroyer = new Destroyer(new Square(0,3), true);
+
+        board.placeShip(minesweeper);
+        board.placeShip(destroyer);
+        board.attack(new Square(0, 3));
+        board.attack(new Square(0, 4));
+
+        // last destroyer square not hit, sonar not available
         assertFalse(board.sonar(new Square(5, 5)));
     }
 
     @Test
     public void testSonarUseMoreThanTwo() {
-        Board board = new Board();
-        board.placeShip(new Ship(3, new Square(5,4), false));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(5,4), false);
+
+        board.placeShip(minesweeper);
         board.attack(new Square(5, 4));
         board.attack(new Square(6, 4));
-        board.attack(new Square(7, 4));
 
-        assert(board.sonar(new Square(5, 5)));
-        assert(board.sonar(new Square(5, 6)));
+        assertTrue(board.sonar(new Square(5, 5)));
+        assertTrue(board.sonar(new Square(5, 6)));
         assertFalse(board.sonar(new Square(5, 7)));
     }
 
     @Test
     public void testSonarSameSquare() {
-        Board board = new Board();
-        board.placeShip(new Ship(3, new Square(5,4), false));
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(5,4), false);
+
+        board.placeShip(minesweeper);
         board.attack(new Square(5, 4));
         board.attack(new Square(6, 4));
-        board.attack(new Square(7, 4));
 
-        assert(board.sonar(new Square(5, 5)));
+        assertTrue(board.sonar(new Square(5, 5)));
         assertFalse(board.sonar(new Square(5, 5)));
     }
 }

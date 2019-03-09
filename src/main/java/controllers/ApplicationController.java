@@ -19,14 +19,14 @@ public class ApplicationController {
     }
 
     public Result placeShip(Context context, PlacementAction g) {
-        if (g.game.placeShip(g.size, g.square, g.vertical)) {
+        if (g.game.placeShip(g.ally, g.enemy)) {
             return Results.json().render(g.game);
         } else {
             return Results.badRequest();
         }
     }
 
-    public Result attack(Context context, GameAction g) {
+    public Result attack(Context context, AttackAction g) {
         if (g.game.attack(g.square)) {
             return Results.json().render(g.game);
         } else {
@@ -34,7 +34,7 @@ public class ApplicationController {
         }
     }
 
-    public Result sonar(Context context, GameAction g) {
+    public Result sonar(Context context, AttackAction g) {
         if (g.game.sonar(g.square)) {
             return Results.json().render(g.game);
         } else {

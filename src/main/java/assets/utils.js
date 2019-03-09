@@ -1,39 +1,75 @@
-
-export function underShip ({ origin, vertical, size }, { x, y }) {
-  return origin &&
-      x >= origin.x &&
-      y >= origin.y &&
-      x <= origin.x + (vertical ? 0 : size - 1) &&
-      y <= origin.y + (vertical ? size - 1 : 0)
-}
-
-export function getShipKind (size) {
-  switch (size) {
-    case 2: return 'MINESWEEPER'
-    case 3: return 'DESTROYER'
-    case 4: return 'BATTLESHIP'
-    default: return null
+function squaresFromType (type) {
+  switch (type) {
+    case 'minesweeper':
+      return [
+        { col: 0, row: 0 },
+        { col: 1, row: 0 }
+      ]
+    case 'destroyer':
+      return [
+        { col: 0, row: 0 },
+        { col: 1, row: 0 },
+        { col: 2, row: 0 }
+      ]
+    case 'battleship':
+      return [
+        { col: 0, row: 0 },
+        { col: 1, row: 0 },
+        { col: 2, row: 0 },
+        { col: 3, row: 0 }
+      ]
+    case 'submarine':
+      return [
+        { col: 0, row: 0 },
+        { col: 1, row: 0 },
+        { col: 2, row: 0 },
+        { col: 2, row: -1 },
+        { col: 3, row: 0 }
+      ]
   }
 }
 
-export function isOccupied ({ ships }, sq) {
-  return ships.find(s => underShip(s, sq))
+function reflectShip ({ squares }) {
+  squares.forEach(s => {
+    let x = s.row
+    s.row = s.col
+    s.col = x
+  })
 }
 
-export function isSunk ({ ships }, sq) {
-  return ships.find(s => underShip(s, sq) && s.sunk)
+function offsetShip ({ squares }, { col, row }) {
+  squares.forEach(s => {
+    s.col += col
+    s.row += row
+  })
 }
 
-export function isAttacked ({ attacks }, { x, y }) {
-  return attacks.find(a => a.x === x && a.y === y)
+export const sameSquareAs = a => b => a.col === b.col && a.row === b.row
+
+export function isInNextShip ({ type, origin, vertical, submerged }, sq) {
+  const squares = squaresFromType(type)
+  if (vertical) reflectShip({ squares })
+  offsetShip({ squares }, origin)
+  return squares.find(sameSquareAs(sq))
 }
 
-export function isSonared ({ sonars }, { x, y }) {
-  return sonars.find(s => Math.abs(s.x - x) + Math.abs(s.y - y) <= 2)
+export function isSonared ({ sonars = [] }, { col, row }) {
+  return sonars.find(s => Math.abs(s.col - col) + Math.abs(s.row - row) <= 2)
 }
 
-export function allShipsSunk (board) {
-  if (!board) return false
-  if (board.ships.length === 0) return false
-  return board.ships.filter(ship => !ship.sunk).length === 0
+export function isOccupied ({ ships = [] }, sq) {
+  return ships.find(({ squares }) => squares.find(sameSquareAs(sq)))
+}
+
+export function isSunk ({ ships = [] }, sq) {
+  return ships.find(({ sunk, squares }) => sunk && squares.find(sameSquareAs(sq)))
+}
+
+export function isAttacked ({ attacks = [] }, sq) {
+  return attacks.find(sameSquareAs(sq))
+}
+
+export function allShipsSunk ({ ships = [] }) {
+  if (ships.length === 0) return false
+  return ships.filter(ship => !ship.sunk).length === 0
 }
