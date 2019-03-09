@@ -14,7 +14,9 @@ public class Board {
     @JsonProperty List<Ship> ships = new ArrayList<>();
     @JsonProperty List<Square> attacks = new ArrayList<>();
     @JsonProperty List<Square> sonars = new ArrayList<>();
+    //@JsonProperty List<Square> lasers = new ArrayList<>();
     @JsonProperty Boolean canSonar = false;
+    //@JsonProperty Boolean usingLaser = false;
 
     /** Add a ship to the board, if it won't collide with an edge or another ship. */
     public boolean placeShip(Ship ship) {
@@ -47,9 +49,19 @@ public class Board {
     /** Add attack to board, if valid. */
     public boolean attack(Square sq) {
         // Reject any attack overlapping with a previous one
-        if (attacksAt(sq) == hitsAllowed(sq)) return false;
+        // unless using laser
+        if (attacksAt(sq) == hitsAllowed(sq) && !usingLaser) return false;
 
-        attacks.add(sq);
+        // If Any ship is sunk (ships sunk >= 1), then we add attacks to lasers
+        // Else, we just attack as normal.
+        if (isAnySunk()) {
+            usingLaser = true;
+            lasers.add(sq);
+        } else {
+            attacks.add(sq);
+        }
+
+
 
         // Set any ships sunk if they are, to make the client simpler
         for (var ship : ships) if (isSunk(ship)) ship.sunk = true;
@@ -81,10 +93,16 @@ public class Board {
         return count;
     }
 
+    private int laserAttacksAt(Square sq) {
+        int count = 0;
+        for (var past : lasers) if (past.equals(sq)) count++;
+        return count;
+    }
+
     private boolean isSunk(Ship ship) {
         if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
         else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
-        for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
+        for (var sq : ship.squares()) if (attacksAt(sq) + laserAttacksAt(sq) == 0) return false;
         return true;
     }
 
