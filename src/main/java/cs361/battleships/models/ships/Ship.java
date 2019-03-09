@@ -18,7 +18,7 @@ import java.util.List;
         @Type(value = Minesweeper.class, name = "minesweeper"),
         @Type(value = Destroyer.class, name = "destroyer"),
         @Type(value = Battleship.class, name = "battleship"),
-        @Type(value = Submarine.class, name = "Submarine")
+        @Type(value = Submarine.class, name = "submarine")
 })
 
 public abstract class Ship {
