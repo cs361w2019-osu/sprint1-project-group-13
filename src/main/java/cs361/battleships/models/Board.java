@@ -54,6 +54,9 @@ public class Board {
         // unless using laser
         if (attacksAt(sq) == hitsAllowed(sq) && !usingLaser) return false;
 
+
+
+
         // If Any ship is sunk (ships sunk >= 1), then we add attacks to lasers
         // Else, we just attack as normal.
         if (isAnySunk()) {
@@ -63,7 +66,19 @@ public class Board {
             attacks.add(sq);
         }
 
+        // If attacking a submerged ship's square
+        // and doesnt have laser yet, reject
 
+        // This probably doesnt belong here...
+        for (var ship : ships) {
+            if(ship.submerged) {
+                for (var thisShipsSq : ship.squares()) {
+                    if(sq.equals(thisShipsSq) && !usingLaser){
+                        return false;
+                    }
+                }
+            }
+        }
 
         // Set any ships sunk if they are, to make the client simpler
         for (var ship : ships) if (isSunk(ship)) ship.sunk = true;
@@ -102,9 +117,13 @@ public class Board {
     }
 
     private boolean isSunk(Ship ship) {
-        if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
-        else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
-        for (var sq : ship.squares()) if (attacksAt(sq) + laserAttacksAt(sq) == 0) return false;
+        if(ship.submerged) {
+            for(var sq : ship.squares()) if (laserAttacksAt(sq) == 0) return false;
+        } else {
+            if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
+            else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
+            for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
+        }
         return true;
     }
 
@@ -134,6 +153,7 @@ public class Board {
     }
 
     private int hitsAllowed (Square sq) {
+
         for (var ship : ships) {
             if (sq.equals(ship.getCaptainsQuarters())) {
                 if (ship.isCaptainsReinforced()) {
