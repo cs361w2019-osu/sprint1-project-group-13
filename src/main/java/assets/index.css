@@ -32,7 +32,7 @@ body {
     cursor: pointer;
 }
 
-.board .hover.submerged {
+.board.allied .hover.submerged {
     background: #16161d;
 }
 
@@ -59,7 +59,8 @@ body {
     background-color: orange;
 }
 
-.board .occupied.sunk {
+.board .occupied.sunk,
+.board .occupied.sunk.submerged.laser {
     background-color: darkorange;
 }
 
