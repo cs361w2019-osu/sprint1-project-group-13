@@ -69,8 +69,12 @@ export function isSunk ({ ships = [] }, sq) {
   return ships.find(({ sunk, squares }) => sunk && squares.find(sameSquareAs(sq)))
 }
 
-export function isAttacked ({ attacks = [] }, sq) {
+export function isMissiled ({ attacks = [] }, sq) {
   return attacks.find(sameSquareAs(sq))
+}
+
+export function isLasered ({ lasers = [] }, sq) {
+  return lasers.find(sameSquareAs(sq))
 }
 
 export function allShipsSunk ({ ships = [] }) {
