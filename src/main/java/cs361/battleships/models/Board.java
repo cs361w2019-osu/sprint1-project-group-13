@@ -110,6 +110,7 @@ public class Board {
 
     private boolean isSunk(Ship ship) {
         if(ship.submerged) {
+            if (laserAttacksAt(ship.getCaptainsQuarters()) > 1) return true;
             for(var sq : ship.squares()) if (laserAttacksAt(sq) == 0) return false;
         } else {
             if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
