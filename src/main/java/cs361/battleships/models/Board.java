@@ -14,9 +14,9 @@ public class Board {
     @JsonProperty List<Ship> ships = new ArrayList<>();
     @JsonProperty List<Square> attacks = new ArrayList<>();
     @JsonProperty List<Square> sonars = new ArrayList<>();
-    //@JsonProperty List<Square> lasers = new ArrayList<>();
+    @JsonProperty List<Square> lasers = new ArrayList<>();
     @JsonProperty Boolean canSonar = false;
-    //@JsonProperty Boolean usingLaser = false;
+    @JsonProperty Boolean usingLaser = false;
 
     /** Add a ship to the board, if it won't collide with an edge or another ship. */
     public boolean placeShip(Ship ship) {
