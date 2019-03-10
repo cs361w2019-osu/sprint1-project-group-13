@@ -44,9 +44,11 @@ public class Game {
 
         return true;
     }
-    public void moveFleet(int x, int y){
-        Board.moveFleet(x, y);
+
+    public boolean moveFleet(int x, int y){
+        return playersBoard.moveFleet(x, y);
     }
+
     /** Player reveals area. */
     public boolean sonar(Square sq) {
         return opponentsBoard.sonar(sq);

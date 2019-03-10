@@ -73,6 +73,10 @@ public class Board {
         return true;
     }
 
+    public boolean moveFleet(int x, int y) {
+        return false;
+    }
+
     private void updateCanSonar() {
         canSonar = lessThanTwoSonars() && isAnySunk();
     }
