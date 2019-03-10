@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import cs361.battleships.models.ships.Destroyer;
 import cs361.battleships.models.ships.Minesweeper;
+import cs361.battleships.models.ships.Submarine;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -46,6 +47,10 @@ public class BoardTest {
         destroyer.origin = new Square(0, 0);
         assertFalse(board.placeShip(destroyer));
 
+        // Test submerged sub overlapping with minesweeper's origin
+        var submarine = new Submarine(new Square(0,1), false, true);
+        assertTrue(board.placeShip(submarine));
+
         destroyer.origin = new Square(0, 1);
         assertFalse(board.placeShip(destroyer));
 
@@ -70,19 +75,44 @@ public class BoardTest {
     }
 
     @Test
+    public void testAttackRepeatLaser(){
+        Board board = new Board();
+        var minesweeper = new Minesweeper(new Square(0,0), false);
+        board.placeShip(minesweeper);
+        board.attack(new Square(0, 0));
+
+        assertTrue(board.usingLaser);
+        assertTrue(board.attack(new Square(0,0)));
+        assertTrue(board.attack(new Square(0,0)));
+    }
+
+    @Test
     public void captainTest(){
         var board = new Board();
         var minesweeper = new Minesweeper(new Square(0,0), false);
         var destroyer = new Destroyer(new Square(0,1), false);
+        var submarine = new Submarine(new Square(0,3), false, true);
+
+        // No laser? Cant sink sub via captain
+        board.placeShip(submarine);
+        assertTrue(board.attack(new Square(3,3)));
+        assertFalse(board.attack(new Square(3,3)));
+        assertFalse(submarine.sunk);
 
         board.placeShip(minesweeper);
         assertTrue(board.attack(new Square(0,0)));
-        assert(minesweeper.sunk);
+        assertTrue(minesweeper.sunk);
 
         board.placeShip(destroyer);
         assertTrue(board.attack(new Square(1,1)));
         assertTrue(board.attack(new Square(1,1)));
-        assert(destroyer.sunk);
+        assertTrue(destroyer.sunk);
+
+        // Laser? Sink sub via captain
+        assertTrue(board.attack(new Square(3,3)));
+        assertTrue(board.attack(new Square(3,3)));
+        assertTrue(submarine.sunk);
+
     }
 
     @Test

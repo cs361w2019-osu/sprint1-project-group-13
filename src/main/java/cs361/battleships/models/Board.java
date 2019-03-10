@@ -51,13 +51,9 @@ public class Board {
     /** Add attack to board, if valid. */
     public boolean attack(Square sq) {
 
-        usingLaser = isAnySunk();
         // Reject any attack overlapping with a previous one
         // unless using laser
         if (attacksAt(sq) == hitsAllowed(sq) && !usingLaser) return false;
-
-
-
 
         // If Any ship is sunk (ships sunk >= 1), then we add attacks to lasers
         // Else, we just attack as normal.
@@ -69,6 +65,9 @@ public class Board {
 
         // Set any ships sunk if they are, to make the client simpler
         for (var ship : ships) if (isSunk(ship)) ship.sunk = true;
+
+        // Check for newly sunk ships
+        usingLaser = isAnySunk();
 
         updateCanSonar();
         return true;
@@ -149,6 +148,9 @@ public class Board {
 
         for (var ship : ships) {
             if (sq.equals(ship.getCaptainsQuarters())) {
+                if (ship.submerged && !usingLaser) {
+                    return 1;
+                }
                 if (ship.isCaptainsReinforced()) {
                     return 2;
                 }
