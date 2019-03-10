@@ -66,20 +66,6 @@ public class Board {
             attacks.add(sq);
         }
 
-        // If attacking a submerged ship's square
-        // and doesnt have laser yet, reject
-
-        // This probably doesnt belong here...
-        for (var ship : ships) {
-            if(ship.submerged) {
-                for (var thisShipsSq : ship.squares()) {
-                    if(sq.equals(thisShipsSq) && !usingLaser){
-                        return false;
-                    }
-                }
-            }
-        }
-
         // Set any ships sunk if they are, to make the client simpler
         for (var ship : ships) if (isSunk(ship)) ship.sunk = true;
 
@@ -122,7 +108,11 @@ public class Board {
         } else {
             if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
             else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
-            for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
+            if(usingLaser){
+                for (var sq : ship.squares()) if (attacksAt(sq) + laserAttacksAt(sq) == 0) return false;
+            } else {
+                for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
+            }
         }
         return true;
     }
