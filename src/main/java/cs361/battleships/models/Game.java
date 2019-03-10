@@ -50,6 +50,11 @@ public class Game {
         return opponentsBoard.sonar(sq);
     }
 
+    public boolean moveFleet(String direction) {
+        // direction can be: North, South, East, West
+        return false;
+    }
+
     private Square randomSquare() {
         Random r = new Random(); //Makes a random string of values
         return new Square(r.nextInt(10), r.nextInt(10)); // grabs numbers from 0-9

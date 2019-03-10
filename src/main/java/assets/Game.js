@@ -21,6 +21,10 @@ export default class Game extends Component {
     }
   }
 
+  canMove () {
+    return this.state.game.opponentsBoard.ships.filter(s => s.sunk).length >= 2
+  }
+
   async send (url, body) {
     this.setState({ error: null })
     try {
@@ -55,16 +59,25 @@ export default class Game extends Component {
     this.setState({ sonarMode: false })
   }
 
+  async moveFleet (direction) {
+    const { game } = this.state
+    await this.send('/move', { game, direction })
+  }
+
   componentDidMount () {
-    const keypress = e => {
+    const keydown = e => {
       const { vertical, submerged, sonarMode, game, yetToPlace: [type] } = this.state
-      const canSonar = game.opponentsBoard && game.opponentsBoard.canSonar
+      const { canSonar } = game.opponentsBoard
       const canSubmerge = type === 'submarine'
       if (e.code === 'KeyR') this.setState({ vertical: !vertical })
       if (e.code === 'KeyP') this.setState({ sonarMode: canSonar ? !sonarMode : false })
       if (e.code === 'KeyS') this.setState({ submerged: canSubmerge ? !submerged : false })
+      if (e.code === 'ArrowUp') if (this.canMove()) this.moveFleet('North')
+      if (e.code === 'ArrowDown') if (this.canMove()) this.moveFleet('South')
+      if (e.code === 'ArrowLeft') if (this.canMove()) this.moveFleet('West')
+      if (e.code === 'ArrowRight') if (this.canMove()) this.moveFleet('East')
     }
-    document.addEventListener('keypress', keypress)
+    document.addEventListener('keydown', keydown)
     this.send('/game')
   }
 
@@ -87,6 +100,7 @@ export default class Game extends Component {
     const nextShip = yetToPlace[0]
     const canAttack = !nextShip && !conclusion
     const { canSonar } = game.opponentsBoard
+    const canMove = this.canMove()
 
     return h('div', { className: 'game' },
       h(Board, {
@@ -109,6 +123,7 @@ export default class Game extends Component {
           sonarMode,
           conclusion,
           canSonar,
+          canMove,
           error
         })
       )

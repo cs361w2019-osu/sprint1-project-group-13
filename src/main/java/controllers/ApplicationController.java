@@ -41,4 +41,12 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
+
+    public Result moveFleet(Context context, MoveAction g) {
+        if (g.game.moveFleet(g.direction)) {
+            return Results.json().render(g.game);
+        } else {
+            return Results.badRequest();
+        }
+    }
 }
