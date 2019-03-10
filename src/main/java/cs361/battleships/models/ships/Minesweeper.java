@@ -12,6 +12,7 @@ public class Minesweeper extends Ship {
     public Minesweeper(Square origin, boolean vertical) {
         this.origin = origin;
         this.vertical = vertical;
+        this.submerged = false;
     }
 
     public List<Square> squares() {

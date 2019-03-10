@@ -17,7 +17,8 @@ import java.util.List;
 @JsonSubTypes({
         @Type(value = Minesweeper.class, name = "minesweeper"),
         @Type(value = Destroyer.class, name = "destroyer"),
-        @Type(value = Battleship.class, name = "battleship")
+        @Type(value = Battleship.class, name = "battleship"),
+        @Type(value = Submarine.class, name = "submarine")
 })
 
 public abstract class Ship {
