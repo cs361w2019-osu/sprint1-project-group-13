@@ -77,12 +77,12 @@ public class BoardTest {
 
         board.placeShip(minesweeper);
         assertTrue(board.attack(new Square(0,0)));
-        assertFalse(board.attack(new Square(0,0)));
+        assert(minesweeper.sunk);
 
         board.placeShip(destroyer);
         assertTrue(board.attack(new Square(1,1)));
         assertTrue(board.attack(new Square(1,1)));
-        assertFalse(board.attack(new Square(1,1)));
+        assert(destroyer.sunk);
     }
 
     @Test
