@@ -4,7 +4,7 @@ import {
   isLasered,
   isSonared,
   isSunk,
-  isSubmerged,
+  isSubOnly,
   sameSquareAs,
   isInNextShip
 } from './utils.js'
@@ -44,7 +44,7 @@ export default class Board extends Component {
     return [
       this.isHovered(square) ? `hover ${submerged ? 'submerged' : ''}` : '',
       isSonared(board, square) ? 'sonar' : '',
-      isSubmerged(board, square) ? 'submerged' : '',
+      isSubOnly(board, square) ? 'submerged' : '',
       isOccupied(board, square) ? 'occupied' : '',
       isMissiled(board, square) ? 'hit' : '',
       isLasered(board, square) ? 'hit laser' : '',

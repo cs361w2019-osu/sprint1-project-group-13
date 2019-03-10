@@ -37,7 +37,8 @@ body {
 }
 
 .board .hit,
-.board .sonar {
+.board .sonar,
+.board .occupied.hit.submerged  {
     background-color: lightblue;
 }
 
@@ -53,7 +54,8 @@ body {
     background-color: darkgray;
 }
 
-.board .occupied.hit {
+.board .occupied.hit,
+.board .occupied.hit.submerged.laser {
     background-color: orange;
 }
 

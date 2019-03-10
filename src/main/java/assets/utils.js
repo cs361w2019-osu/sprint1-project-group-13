@@ -61,8 +61,10 @@ export function isOccupied ({ ships = [] }, sq) {
   return ships.find(({ squares }) => squares.find(sameSquareAs(sq)))
 }
 
-export function isSubmerged ({ ships = [] }, sq) {
-  return ships.find(({ submerged, squares }) => submerged && squares.find(sameSquareAs(sq)))
+export function isSubOnly ({ ships = [] }, sq) {
+  const hasSub = ships.find(({ submerged, squares }) => submerged && squares.find(sameSquareAs(sq)))
+  const hasSurf = ships.find(({ submerged, squares }) => !submerged && squares.find(sameSquareAs(sq)))
+  return hasSub && !hasSurf
 }
 
 export function isSunk ({ ships = [] }, sq) {
