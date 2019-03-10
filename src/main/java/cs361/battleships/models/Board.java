@@ -50,6 +50,8 @@ public class Board {
 
     /** Add attack to board, if valid. */
     public boolean attack(Square sq) {
+
+        usingLaser = isAnySunk();
         // Reject any attack overlapping with a previous one
         // unless using laser
         if (attacksAt(sq) == hitsAllowed(sq) && !usingLaser) return false;
@@ -59,8 +61,7 @@ public class Board {
 
         // If Any ship is sunk (ships sunk >= 1), then we add attacks to lasers
         // Else, we just attack as normal.
-        if (isAnySunk()) {
-            usingLaser = true;
+        if (usingLaser) {
             lasers.add(sq);
         } else {
             attacks.add(sq);
@@ -92,7 +93,12 @@ public class Board {
 
     private int attacksAt(Square sq) {
         int count = 0;
-        for (var past : attacks) if (past.equals(sq)) count++;
+        if(usingLaser){
+            for (var past : attacks) if (past.equals(sq)) count++;
+            for (var past : lasers) if (past.equals(sq)) count++;
+        } else {
+            for (var past : attacks) if (past.equals(sq)) count++;
+        }
         return count;
     }
 
@@ -108,11 +114,7 @@ public class Board {
         } else {
             if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
             else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
-            if(usingLaser){
-                for (var sq : ship.squares()) if (attacksAt(sq) + laserAttacksAt(sq) == 0) return false;
-            } else {
-                for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
-            }
+            for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
         }
         return true;
     }
