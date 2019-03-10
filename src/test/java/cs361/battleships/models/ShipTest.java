@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import cs361.battleships.models.ships.Battleship;
 import cs361.battleships.models.ships.Destroyer;
 import cs361.battleships.models.ships.Minesweeper;
+import cs361.battleships.models.ships.Submarine;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
@@ -14,6 +15,16 @@ public class ShipTest {
     public void testMinesweeper() {
         var ship = new Minesweeper(new Square(0, 0), false);
         assertTrue(ship.getCaptainsQuarters().equals(new Square(0, 0)));
+    }
+    @Test
+    public void testSubmarine() {
+        var ship = new Submarine(new Square(1, 1), false, true);
+        assertTrue(ship.getCaptainsQuarters().equals(new Square(4, 1)));
+    }
+    @Test
+    public void testSubmerged() {
+        var ship = new Submarine(new Square(1, 1), false, true);
+        assertTrue(ship.submerged);
     }
 
     @Test
