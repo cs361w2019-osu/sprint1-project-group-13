@@ -33,14 +33,15 @@ public class Board {
 
         // Reject if any of ship's squares are already occupied
         // TODO allow placement of submarine if submerged.
-        for (var taken : occupied) {
-            for (var sq : proposed) {
-                if (taken.equals(sq)) {
-                    return false;
+        if(!(ship.submerged)) {
+            for (var taken : occupied) {
+                for (var sq : proposed) {
+                    if (taken.equals(sq)) {
+                        return false;
+                    }
                 }
             }
         }
-
         ships.add(ship);
         return true;
     }

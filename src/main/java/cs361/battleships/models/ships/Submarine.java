@@ -9,9 +9,11 @@ public class Submarine extends Ship {
 
     public Submarine() {}
 
-    public Submarine(Square origin, boolean vertical) {
+    public Submarine(Square origin, boolean vertical, boolean submerged) {
         this.origin = origin;
         this.vertical = vertical;
+        this.submerged = submerged;
+        //this.submerged = ???;
     }
 
     public List<Square> squares() {
