@@ -86,7 +86,7 @@ export default class Game extends Component {
 
     const nextShip = yetToPlace[0]
     const canAttack = !nextShip && !conclusion
-    const { canSonar } = game.opponentsBoard
+    const { canSonar, usingLaser } = game.opponentsBoard
 
     return h('div', { className: 'game' },
       h(Board, {
@@ -109,6 +109,7 @@ export default class Game extends Component {
           sonarMode,
           conclusion,
           canSonar,
+          usingLaser,
           error
         })
       )
