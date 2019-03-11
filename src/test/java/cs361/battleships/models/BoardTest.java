@@ -82,8 +82,8 @@ public class BoardTest {
         board.attack(new Square(0, 0));
 
         assertTrue(board.usingLaser);
-        assertTrue(board.attack(new Square(0,0)));
-        assertTrue(board.attack(new Square(0,0)));
+        assertTrue(board.attack(new Square(0,0))); // allowed in case submarine is below
+        assertFalse(board.attack(new Square(0,0))); // then repeat disallowed
     }
 
     @Test
