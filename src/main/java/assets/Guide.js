@@ -4,7 +4,7 @@ const { createElement: h, Component } = React
 /** Tell the player what can be done next. */
 export default class Guide extends Component {
   guideText () {
-    const { nextShip, sonarMode, conclusion } = this.props
+    const { nextShip, usingLaser, sonarMode, conclusion } = this.props
     if (conclusion) {
       return conclusion
     } else if (nextShip) {
@@ -12,7 +12,7 @@ export default class Guide extends Component {
     } else if (sonarMode) {
       return `☝️ Click to deploy sonar pulse!`
     } else {
-      return `☝️ Click to attack a square!`
+      return `☝️ Click to fire ${usingLaser ? 'space laser' : 'missile'}!`
     }
   }
 
