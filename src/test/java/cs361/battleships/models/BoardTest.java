@@ -172,4 +172,13 @@ public class BoardTest {
         assertTrue(board.sonar(new Square(5, 5)));
         assertFalse(board.sonar(new Square(5, 5)));
     }
+    @Test
+    public void moveMoreThanTwice(){
+        var board = new Board();
+        var minesweeper = new Minesweeper(new Square(5,4), false);
+        board.placeShip(minesweeper);
+        assertTrue(board.moveFleet(North));
+        assertTrue(board.moveFleet(East));
+        assertFalse(board.moveFleet(South));
+    }
 }

@@ -47,6 +47,28 @@ public class Board {
         ships.add(ship);
         return true;
     }
+    public boolean moveFleet(String direction){
+        for (int existing = 0; existing < ships.size(); existing++) {
+            if (direction == "North") {
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col, ships.get(existing).squares().get(i).row + 1);
+                }
+            } else if (direction == "South") {
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col, ships.get(existing).squares().get(i).row - 1);
+                }
+            } else if (direction == "East") {
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col + 1, ships.get(existing).squares().get(i).row);
+                }
+            } else if (direction == "West") {
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col - 1, ships.get(existing).squares().get(i).row);
+                }
+            }
+        }
+        return false;
+    }
 
     /** Add attack to board, if valid. */
     public boolean attack(Square sq) {
@@ -82,6 +104,10 @@ public class Board {
         sonars.add(sq);
         updateCanSonar();
         return true;
+    }
+
+    public boolean moveFleet(int x, int y) {
+        return false;
     }
 
     private void updateCanSonar() {

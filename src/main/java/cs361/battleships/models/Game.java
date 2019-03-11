@@ -45,6 +45,10 @@ public class Game {
         return true;
     }
 
+    public boolean moveFleet(string direction){
+        return playersBoard.moveFleet(direction);
+    }
+
     /** Player reveals area. */
     public boolean sonar(Square sq) {
         return opponentsBoard.sonar(sq);
