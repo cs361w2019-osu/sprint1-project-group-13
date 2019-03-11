@@ -45,8 +45,8 @@ public class Game {
         return true;
     }
 
-    public boolean moveFleet(int x, int y){
-        return playersBoard.moveFleet(x, y);
+    public boolean moveFleet(string direction){
+        return playersBoard.moveFleet(direction);
     }
 
     /** Player reveals area. */
