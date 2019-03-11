@@ -48,22 +48,20 @@ public class Board {
     public boolean moveFleet(String direction){
         for (int existing = 0; existing < ships.size(); existing++) {
             if (direction == "North") {
-              //  for (int i = 0; i < (ships[existing].squares.size()); i++) {
-                //attempt to loop through the squares of a ship, compiler finds just a ship
-                    for ( var i : ships[existing].squares()){
-                    ships[existing].squares[i].Square(ships[existing].squares[i].col, (ships[existing].squares[i].row) + 1);
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col, ships.get(existing).squares().get(i).row + 1);
                 }
             } else if (direction == "South") {
-                for (int i = 0; i < (ships[existing].squares()).size; i++) {
-                    ships[existing].squares[i].Square(ships[existing].squares[i].col, (ships[existing].squares[i].row) - 1);
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col, ships.get(existing).squares().get(i).row - 1);
                 }
             } else if (direction == "East") {
-                for (int i = 0; i < (ships[existing].squares()).size; i++) {
-                    ships[existing].squares[i].Square((ships[existing].squares[i].col) + 1, ships[existing].squares[i].row);
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col + 1, ships.get(existing).squares().get(i).row);
                 }
             } else if (direction == "West") {
-                for (int i = 0; i < (ships[existing].squares()).size; i++) {
-                    ships[existing].squares[i].Square((ships[existing].squares[i].col) - 1, ships[existing].squares[i].row);
+                for ( var i : ships.get(existing).squares()){
+                    ships.get(existing).squares().get(i).Square(ships.get(existing).squares().get(i).col - 1, ships.get(existing).squares().get(i).row);
                 }
             }
         }
