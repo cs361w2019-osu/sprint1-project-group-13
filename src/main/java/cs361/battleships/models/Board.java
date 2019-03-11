@@ -51,9 +51,7 @@ public class Board {
     /** Add attack to board, if valid. */
     public boolean attack(Square sq) {
 
-        // Reject any attack overlapping with a previous one
-        // unless using laser
-        if (attacksAt(sq) == hitsAllowed(sq) && !usingLaser) return false;
+        if (!canAttack(sq)) return false;
 
         // If Any ship is sunk (ships sunk >= 1), then we add attacks to lasers
         // Else, we just attack as normal.
@@ -90,33 +88,43 @@ public class Board {
         canSonar = lessThanTwoSonars() && isAnySunk();
     }
 
-    private int attacksAt(Square sq) {
+    private int attacksAt(Square sq, boolean submerged) {
         int count = 0;
-        if(usingLaser){
-            for (var past : attacks) if (past.equals(sq)) count++;
+        if (submerged) {
             for (var past : lasers) if (past.equals(sq)) count++;
         } else {
             for (var past : attacks) if (past.equals(sq)) count++;
+            for (var past : lasers) if (past.equals(sq)) count++;
         }
-        return count;
-    }
-
-    private int laserAttacksAt(Square sq) {
-        int count = 0;
-        for (var past : lasers) if (past.equals(sq)) count++;
         return count;
     }
 
     private boolean isSunk(Ship ship) {
-        if(ship.submerged) {
-            if (laserAttacksAt(ship.getCaptainsQuarters()) > 1) return true;
-            for(var sq : ship.squares()) if (laserAttacksAt(sq) == 0) return false;
-        } else {
-            if ((attacksAt(ship.getCaptainsQuarters()) > 0) && !ship.isCaptainsReinforced()) return true;
-            else if (attacksAt(ship.getCaptainsQuarters()) > 1) return true;
-            for (var sq : ship.squares()) if (attacksAt(sq) == 0) return false;
-        }
+        // Captains sunk
+        int capHitsNeeded = ship.isCaptainsReinforced() ? 2 : 1;
+        int capHitsActual = attacksAt(ship.getCaptainsQuarters(), ship.submerged);
+        if (capHitsActual >= capHitsNeeded) return true;
+        // Regular sunk
+        for (var sq : ship.squares()) if (attacksAt(sq, ship.submerged) == 0) return false;
         return true;
+    }
+
+    private boolean canAttack(Square target) {
+        var allowed = 1;
+
+        for (var ship : ships) {
+            if (usingLaser || !ship.submerged) {
+                if (!isSunk(ship)) {
+                    if (ship.getCaptainsQuarters().equals(target)) {
+                        if (ship.isCaptainsReinforced()) {
+                            allowed = 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        return attacksAt(target, usingLaser) < allowed;
     }
 
     private boolean isAnySunk(){
@@ -142,21 +150,6 @@ public class Board {
             return true;
         }
         return false;
-    }
-
-    private int hitsAllowed (Square sq) {
-
-        for (var ship : ships) {
-            if (sq.equals(ship.getCaptainsQuarters())) {
-                if (ship.submerged && !usingLaser) {
-                    return 1;
-                }
-                if (ship.isCaptainsReinforced()) {
-                    return 2;
-                }
-            }
-        }
-        return 1; // Miss and regular squares
     }
 
 }
